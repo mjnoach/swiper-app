@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/mjnoach/muzz-dating-app/internal/database/mariadb"
+	_ "dating-app/internal/database/mariadb"
 )
 
-func home(w http.ResponseWriter, r *http.Request){
+func home(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World!")
 	fmt.Println("Endpoint Hit: home")
 }

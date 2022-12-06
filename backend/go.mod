@@ -1,4 +1,4 @@
-module github.com/mjnoach/muzz-dating-app
+module dating-app
 
 go 1.19
 
