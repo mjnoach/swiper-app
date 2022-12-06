@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	_ "github.com/mjnoach/muzz-dating-app/internal/database/mariadb"
 )
 
 func home(w http.ResponseWriter, r *http.Request){
