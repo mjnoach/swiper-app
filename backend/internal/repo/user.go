@@ -1,4 +1,4 @@
-package database
+package repo
 
 import (
 	db "dating-app/internal/database"
@@ -22,16 +22,15 @@ func (u *User) CreateUser() (int64, error) {
 	return id, nil
 }
 
-func (u *User) GetAllUser() ([]*User, error) {
-	var users []*User
+func (u *User) GetAllUser() ([]*models.User, error) {
+	var users []*models.User
 	rows, err := db.Client.Query("SELECT * FROM user")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 	for rows.Next() {
-		var u *User
-		err = rows.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age)
+		var u *models.User
+		err = rows.Scan(u.ID, u.Email, u.Password, u.Name, u.Gender, u.Age)
 		if err != nil {
 			return users, err
 		}
@@ -41,5 +40,6 @@ func (u *User) GetAllUser() ([]*User, error) {
 	if err != nil {
 		return users, err
 	}
+	defer rows.Close()
 	return users, nil
 }

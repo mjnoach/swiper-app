@@ -2,33 +2,33 @@ package database
 
 import (
 	"database/sql"
+	"dating-app/pkg/utils"
 	"fmt"
-	"log"
+	"os"
 
 	mysql "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
-
-var config = mysql.Config{
-	User:                 "admin",
-	Passwd:               "admin",
-	Net:                  "tcp",
-	Addr:                 "localhost:3306",
-	DBName:               "dating_app",
-	AllowNativePasswords: true,
-}
 
 var (
 	Client *sql.DB
 )
 
 func init() {
+	godotenv.Load()
+
+	var config = mysql.Config{
+		User:                 os.Getenv("DBUSER"),
+		Passwd:               os.Getenv("DBPASS"),
+		Net:                  "tcp",
+		Addr:                 fmt.Sprintf("%s:%s", os.Getenv("DBHOST"), os.Getenv("DBPORT")),
+		DBName:               os.Getenv("DBNAME"),
+		AllowNativePasswords: true,
+	}
+
 	Client, err := sql.Open("mysql", config.FormatDSN())
-	if err != nil {
-		log.Fatal(err)
-	}
+	utils.CheckFatal(err, "error opening database")
 	err = Client.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
+	utils.CheckFatal(err, "error pinging database")
 	fmt.Println("Database connection initialized!")
 }
