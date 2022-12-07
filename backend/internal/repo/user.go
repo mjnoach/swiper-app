@@ -1,7 +1,7 @@
-package mariadb
+package database
 
 import (
-	db "dating-app/internal/database/mariadb"
+	db "dating-app/internal/database"
 	"dating-app/pkg/models"
 )
 

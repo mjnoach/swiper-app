@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	_ "dating-app/internal/database/mariadb"
+	_ "dating-app/internal/database"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
