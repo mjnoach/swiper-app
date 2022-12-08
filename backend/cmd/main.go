@@ -5,32 +5,26 @@ import (
 	"log"
 	"net/http"
 
-	_ "dating-app/internal/database"
-	repo "dating-app/internal/repo"
+	_ "dating-app/internal/db"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("home")
+	log.Printf("home")
 	fmt.Fprintf(w, "Hello World!")
 }
 
 func test(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("test")
-	var userRepo repo.User
-	// var userRepo = &user
-	// userRepo.GetAllUser()
-
+	log.Printf("test")
 	// var userRepo repo.UserRepository
-	users, err := userRepo.GetAllUser()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("users: ", users)
+	// useRepo = &repo.User{}
+	// users, error := userRepo.CreateUser()
+	// utils.CheckErr(error, "")
+	// log.Printd("users: ", users)
 }
 
 func handleRequests() {
-	http.HandleFunc("/", home)
 	http.HandleFunc("/test", test)
+	http.HandleFunc("/", home)
 }
 
 func main() {
@@ -39,6 +33,6 @@ func main() {
 	host := fmt.Sprintf("%s:%s", hostname, port)
 
 	handleRequests()
-	fmt.Println("Starting server on " + host)
+	log.Printf("Starting server on " + host)
 	log.Fatal(http.ListenAndServe(host, nil))
 }
