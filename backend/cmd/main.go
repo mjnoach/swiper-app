@@ -26,6 +26,7 @@ func main() {
 	router.GET("/", func(ctx echo.Context) error {
 		return ctx.String(http.StatusOK, "Hello World!")
 	})
+	router.GET("/user/create", api.CreateRandomUser)
 	router.POST("/user/create", api.CreateUser)
 	router.GET("/user/:id", api.GetUser)
 	router.GET("/profiles", api.GetAllUser)
