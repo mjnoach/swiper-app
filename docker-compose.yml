@@ -1,0 +1,30 @@
+services:
+  db:
+    container_name: db
+    build: backend/internal/db/
+    image: mjnoach/dating_app/db
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: admin
+      MARIADB_DATABASE: dating_app
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_MYSQL_LOCALHOST_USER: yes
+
+  backend:
+    container_name: backend
+    build: backend/
+    image: mjnoach/dating_app/backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DBUSER: admin
+      DBPASS: admin
+      DBHOST: db
+      DBPORT: 3306
+      DBNAME: dating_app
+      APIHOST: localhost
+      APIPORT: 8080

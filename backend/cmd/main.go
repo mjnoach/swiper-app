@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"dating-app/internal/api"
 	_ "dating-app/internal/db"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -14,8 +16,9 @@ import (
 var router = echo.New()
 
 func main() {
-	hostname := "localhost"
-	port := "8080"
+	godotenv.Load()
+	hostname := os.Getenv("APIHOST")
+	port := os.Getenv("APIPORT")
 	host := fmt.Sprintf("%s:%s", hostname, port)
 
 	// Middleware

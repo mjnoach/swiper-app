@@ -33,9 +33,9 @@ func initDbConnection() {
 
 	var err error
 	Client, err = sql.Open("mysql", config.FormatDSN())
-	utils.CheckFatal(err, "error opening database")
+	utils.CheckPanic(err, "error opening database")
 	err = Client.Ping()
-	utils.CheckFatal(err, "error pinging database")
+	utils.CheckPanic(err, "error pinging database")
 	log.Printf("Database connection initialized!")
 }
 
@@ -51,6 +51,6 @@ func performSchemaMigration() {
 	default:
 		n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
 	}
-	utils.CheckFatal(err, "")
+	utils.CheckPanic(err, "")
 	log.Printf("Applied %d migrations!", n)
 }
