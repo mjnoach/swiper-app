@@ -6,6 +6,9 @@ import (
 	"net/http"
 
 	_ "dating-app/internal/db"
+	"dating-app/internal/repo"
+	"dating-app/pkg/models"
+	"dating-app/pkg/utils"
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -15,11 +18,12 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 func test(w http.ResponseWriter, r *http.Request) {
 	log.Printf("test")
-	// var userRepo repo.UserRepository
-	// useRepo = &repo.User{}
-	// users, error := userRepo.CreateUser()
-	// utils.CheckErr(error, "")
-	// log.Printd("users: ", users)
+	user := models.User{
+		Name: "test@mail.com",
+	}
+	res, error := repo.CreateUser(&user)
+	utils.CheckFatal(error, "")
+	log.Printf("users: %v", res)
 }
 
 func handleRequests() {

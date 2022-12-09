@@ -10,6 +10,6 @@ type User struct {
 }
 
 type UserRepository interface {
-	CreateUser() (int64, error)
+	CreateUser(u *User) (int64, error)
 	GetAllUser() ([]*User, error)
 }
