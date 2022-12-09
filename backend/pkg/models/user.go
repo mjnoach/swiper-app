@@ -9,7 +9,8 @@ type User struct {
 	Age      int    `json:"age"`
 }
 
-type UserRepository interface {
+type UserInterface interface {
 	CreateUser(u *User) (int64, error)
+	GetUser(id int) (*User, error)
 	GetAllUser() ([]*User, error)
 }

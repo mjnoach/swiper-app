@@ -12,17 +12,15 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 )
 
-var (
-	Client *sql.DB
-)
+var Client *sql.DB
 
 func init() {
 	godotenv.Load()
-	client := initDbConnection()
-	performSchemaMigration(client)
+	initDbConnection()
+	performSchemaMigration()
 }
 
-func initDbConnection() *sql.DB {
+func initDbConnection() {
 	var config = mysql.Config{
 		User:                 os.Getenv("DBUSER"),
 		Passwd:               os.Getenv("DBPASS"),
@@ -33,15 +31,15 @@ func initDbConnection() *sql.DB {
 		ParseTime:            true,
 	}
 
-	Client, err := sql.Open("mysql", config.FormatDSN())
+	var err error
+	Client, err = sql.Open("mysql", config.FormatDSN())
 	utils.CheckFatal(err, "error opening database")
 	err = Client.Ping()
 	utils.CheckFatal(err, "error pinging database")
 	log.Printf("Database connection initialized!")
-	return Client
 }
 
-func performSchemaMigration(client *sql.DB) {
+func performSchemaMigration() {
 	migrations := &migrate.FileMigrationSource{
 		Dir: "internal/db/migrations",
 	}
@@ -49,9 +47,9 @@ func performSchemaMigration(client *sql.DB) {
 	var err error
 	switch os.Getenv("MIGRATE") {
 	case "down":
-		n, err = migrate.Exec(client, "mysql", migrations, migrate.Down)
+		n, err = migrate.Exec(Client, "mysql", migrations, migrate.Down)
 	default:
-		n, err = migrate.Exec(client, "mysql", migrations, migrate.Up)
+		n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
 	}
 	utils.CheckFatal(err, "")
 	log.Printf("Applied %d migrations!", n)
