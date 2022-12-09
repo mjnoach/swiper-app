@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	_ "dating-app/internal/db"
-	"dating-app/internal/repo"
+	"dating-app/internal/service"
 	"dating-app/pkg/models"
 	"dating-app/pkg/utils"
 )
@@ -26,21 +26,21 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		Gender:   "M",
 		Age:      21,
 	}
-	id, error := repo.CreateUser(&user)
+	id, error := service.CreateUser(&user)
 	utils.CheckFatal(error, "")
 	json.NewEncoder(w).Encode(id)
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
 	log.Printf("/getUser")
-	user, error := repo.GetUser(1)
+	user, error := service.GetUser(1)
 	utils.CheckFatal(error, "")
 	json.NewEncoder(w).Encode(user)
 }
 
 func profiles(w http.ResponseWriter, r *http.Request) {
 	log.Printf("/profiles")
-	profiles, error := repo.GetAllUser()
+	profiles, error := service.GetAllUser()
 	utils.CheckFatal(error, "")
 	json.NewEncoder(w).Encode(profiles)
 }
