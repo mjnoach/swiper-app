@@ -1,0 +1,13 @@
+{
+  "name": "dating-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mjnoach/dating-app.git",
+  "author": "mjnoach <a.siennkiewicz@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "db": "docker build -t mjnoach/dating_app/db backend/internal/db; docker run -d -p 3306:3306 mjnoach/dating_app/db;",
+    "backend": "cd ./backend; nodemon --exec go run cmd/main.go --signal SIGTERM; cd .."
+  }
+}
