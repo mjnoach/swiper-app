@@ -1,19 +1,19 @@
 services:
   db:
     container_name: db
-    build: ./backend/internal/db
+    build: ./backend/db
     image: dating_app/db
     ports:
       - "3306:3306"
-    env_file: ./backend/.env
+    env_file: ./backend/db/.env
 
   api:
     container_name: api
-    build: ./backend
+    build: ./backend/api
     image: dating_app/api
     ports:
       - "8080:8080"
-    env_file: ./backend/.env
+    env_file: ./backend/api/.env
     depends_on:
       - db
     environment:

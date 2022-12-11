@@ -7,8 +7,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "db": "docker build -t dating_app/db ./backend/internal/db; docker run -d -p 3306:3306 --name dating_app_db --env-file ./backend/.env dating_app/db;",
-    "api": "cd ./backend; nodemon --exec go run cmd/main.go --signal SIGTERM; cd ..",
+    "db": "docker build -t dating_app/db ./backend/db; docker run -d -p 3306:3306 --name dating_app_db --env-file ./backend/db/.env dating_app/db;",
+    "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM; cd ../..",
     "frontend": "cd ./frontend; yarn web; cd .."
   }
 }
