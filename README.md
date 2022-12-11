@@ -16,6 +16,11 @@ yarn db
 // run the api
 
 yarn api
+
+
+// run the frontend
+
+yarn frontend
 ```
 
 ## `db`
@@ -56,6 +61,13 @@ go build -o bin/dating_app cmd/main.go
 bin/dating_app .; 
 cd ..;
 ```
+
+## `frontend`
+
+```console
+yarn frontend
+```
+
 
 <!-- TODO -->
 <!-- - ?? export $PATH with `go` and `sql-migrate` ? -->
