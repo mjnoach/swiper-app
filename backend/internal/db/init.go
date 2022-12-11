@@ -21,11 +21,15 @@ func init() {
 }
 
 func initDbConnection() {
+	var DBADDR = os.Getenv("DBADDR")
+	if len(DBADDR) == 0 {
+		DBADDR = fmt.Sprintf("%s:%s", os.Getenv("DBHOST"), os.Getenv("DBPORT"))
+	}
 	var config = mysql.Config{
 		User:                 os.Getenv("DBUSER"),
 		Passwd:               os.Getenv("DBPASS"),
 		Net:                  "tcp",
-		Addr:                 fmt.Sprintf("%s:%s", os.Getenv("DBHOST"), os.Getenv("DBPORT")),
+		Addr:                 DBADDR,
 		DBName:               os.Getenv("DBNAME"),
 		AllowNativePasswords: true,
 		ParseTime:            true,
