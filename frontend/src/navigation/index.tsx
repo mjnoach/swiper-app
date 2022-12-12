@@ -84,7 +84,6 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Feed"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
