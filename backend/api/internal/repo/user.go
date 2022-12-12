@@ -9,7 +9,7 @@ import (
 type User models.User
 type UserRepository models.UserInterface
 
-func CreateUser(u *models.User) (int64, error) {
+func CreateUser(u *models.User) (int, error) {
 	res, err := db.Client.Exec(
 		"INSERT INTO profile (email, password, name, gender, age) VALUES (?,?,?,?,?)",
 		u.Email, u.Password, u.Name, u.Gender, u.Age)
@@ -21,7 +21,8 @@ func CreateUser(u *models.User) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return id, nil
+	idInt := int(id)
+	return idInt, nil
 }
 
 func GetUser(id int) (*models.User, error) {

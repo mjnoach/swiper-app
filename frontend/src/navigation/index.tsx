@@ -147,7 +147,7 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="User"
         component={UserScreen}
-        options={({ navigation }: RootTabScreenProps<'User'>) => ({
+        options={() => ({
           title: 'User',
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={30} color={color} />

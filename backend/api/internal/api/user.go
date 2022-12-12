@@ -10,8 +10,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type User = models.User
+
 func CreateRandomUser(ctx echo.Context) error {
-	res, err := service.CreateRandomUser()
+	user := new(models.User)
+	ctx.Bind(user)
+	id, err := service.CreateRandomUser()
+	if err != nil {
+		utils.CheckErr(err, "")
+		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
+	}
+	res, err := service.GetUser(id)
 	if err != nil {
 		utils.CheckErr(err, "")
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")

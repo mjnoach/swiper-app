@@ -1,7 +1,7 @@
 package models
 
 type User struct {
-	ID       uint   `json:"id"`
+	ID       int    `json:"id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Name     string `json:"name"`
@@ -10,7 +10,7 @@ type User struct {
 }
 
 type UserInterface interface {
-	CreateUser(u *User) (int64, error)
+	CreateUser(u *User) (int, error)
 	GetUser(id int) (*User, error)
 	GetAllUser() ([]*User, error)
 }

@@ -7,13 +7,14 @@ import {
   TextInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import axios from 'axios'
 import { StyleSheet } from 'react-native'
 
-export function CreateUserForm() {
+export function CreateUserForm({ navigation }) {
   const form = useForm({
     initialValues: {
-      email: '',
-      password: '',
+      email: 'test@mail.com',
+      password: 'asdasd',
       termsOfService: false,
     },
     validate: {
@@ -22,8 +23,26 @@ export function CreateUserForm() {
     },
   })
 
-  function handleFormSubmit() {
-    console.log(form.values)
+  async function createUser() {
+    const APIROOT = 'http://localhost:8080'
+    const response = await axios.get(`${APIROOT}/user/create`)
+    const user = response.data
+    console.log(
+      '🚀 ~ file: CreateUserForm.tsx ~ line 31 ~ createUser ~ user',
+      user,
+    )
+    // persist user data in session cookie
+    return user
+  }
+
+  async function handleFormSubmit() {
+    createUser()
+      .then(() => {
+        navigation.navigate('Root')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (
@@ -31,14 +50,17 @@ export function CreateUserForm() {
       <form onSubmit={form.onSubmit(handleFormSubmit)}>
         <TextInput
           style={styles.input}
+          variant="filled"
           withAsterisk
           label="Email"
           placeholder="your@email.com"
           autoComplete="email"
+          textcontenttype="email"
           {...form.getInputProps('email')}
         />
         <PasswordInput
           style={styles.input}
+          variant="filled"
           withAsterisk
           label="Password"
           placeholder="Password"
@@ -47,12 +69,15 @@ export function CreateUserForm() {
           {...form.getInputProps('password')}
         />
         <Checkbox
+          color="dark"
           mt="md"
           label="I agree"
           {...form.getInputProps('termsOfService', { type: 'checkbox' })}
         />
         <Group position="right" mt="md">
-          <Button type="submit">Submit</Button>
+          <Button type="submit" color="dark">
+            Submit
+          </Button>
         </Group>
       </form>
     </Box>

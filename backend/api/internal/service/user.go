@@ -7,7 +7,7 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 )
 
-func CreateRandomUser() (int64, error) {
+func CreateRandomUser() (int, error) {
 	user := models.User{
 		Email:    gofakeit.Email(),
 		Name:     gofakeit.Name(),
@@ -19,15 +19,17 @@ func CreateRandomUser() (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return id, nil
+	user.ID = int(id)
+	return user.ID, nil
 }
 
-func CreateUser(u *models.User) (int64, error) {
+func CreateUser(u *models.User) (int, error) {
 	id, err := repo.CreateUser(u)
 	if err != nil {
 		return 0, err
 	}
-	return id, nil
+	u.ID = int(id)
+	return u.ID, nil
 }
 
 func GetUser(id int) (*models.User, error) {

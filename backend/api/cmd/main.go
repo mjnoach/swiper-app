@@ -24,6 +24,7 @@ func main() {
 	// Middleware
 	router.Use(middleware.Logger())
 	router.Use(middleware.Recover())
+	router.Use(middleware.CORS())
 
 	// Routes
 	router.GET("/", func(ctx echo.Context) error {
