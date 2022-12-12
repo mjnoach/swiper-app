@@ -91,7 +91,7 @@ type CardProps = {
 }
 type Card = CardProps
 
-export default function Card({ id, title }: CardProps) {
+export function Card({ id, title }: CardProps) {
   return (
     <PullRelease>
       <View style={[styles.card, styles.shadow]}>

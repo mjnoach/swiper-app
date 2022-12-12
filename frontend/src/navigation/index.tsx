@@ -67,7 +67,7 @@ function RootNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="UserModal" component={UserScreen} />
+        <Stack.Screen name="User" component={UserScreen} />
       </Stack.Group>
     </Stack.Navigator>
   )
@@ -156,7 +156,7 @@ function BottomTabNavigator() {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault()
-            navigation.navigate('UserModal')
+            navigation.navigate('User')
           },
         })}
       />

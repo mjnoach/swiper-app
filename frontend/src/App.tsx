@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet } from 'react-native'
 import { View } from './components/Themed'
 
+import { MantineProvider } from '@mantine/core'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
@@ -14,12 +15,14 @@ export default function App() {
     return null
   }
   return (
-    <View style={[styles.app]}>
-      <View style={styles.centered}>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <View style={[styles.app]}>
+        <View style={styles.centered}>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </View>
       </View>
-    </View>
+    </MantineProvider>
   )
 }
 

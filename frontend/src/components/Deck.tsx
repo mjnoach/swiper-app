@@ -11,7 +11,7 @@ type DeckProps = {
   profiles: Profile[]
 }
 
-export default function Deck(props: DeckProps) {
+export function Deck(props: DeckProps) {
   const [gone] = useState(() => new Set())
   const [springs, setSpring] = useSprings(props.profiles.length, (i) => ({
     ...to(i),
