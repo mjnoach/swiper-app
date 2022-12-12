@@ -1,6 +1,9 @@
 import { H1, H2 } from '@expo/html-elements'
+import { animated, useSpring } from '@react-spring/web'
+import { useState } from 'react'
 import { Image, Pressable, StyleSheet, Text } from 'react-native'
-import { View } from './Themed'
+import { View } from '../Themed'
+import { getProfileImageUrl } from './utils'
 
 type ButtonProps = {
   title: string
@@ -8,12 +11,49 @@ type ButtonProps = {
 }
 
 function Button(props: ButtonProps) {
+  const [hover, setHover] = useState(false)
+  const { x } = useSpring({
+    from: { x: 0 },
+    x: hover ? 1 : 0,
+    config: { duration: 70 },
+  })
+
+  function handleHoverIn() {
+    setHover(true)
+  }
+
+  function handleHoverOut() {
+    setHover(false)
+  }
+
+  const animatedProps = {
+    transform: x
+      .to({
+        range: [0, 1],
+        output: [1, 1.1],
+      })
+      .to((x) => `scale(${x})`),
+  }
+
   return (
-    <Pressable style={[styles.button, styles.shadow]} onPress={props.onPress}>
-      <Text style={styles.buttonText} selectable={false}>
-        {props.title}
-      </Text>
-    </Pressable>
+    <animated.div style={animatedProps}>
+      <Pressable
+        style={[
+          styles.button,
+          styles.shadow,
+          hover && {
+            backgroundColor: '#eee',
+          },
+        ]}
+        onPress={props.onPress}
+        onHoverIn={handleHoverIn}
+        onHoverOut={handleHoverOut}
+      >
+        <Text style={styles.buttonText} selectable={false}>
+          {props.title}
+        </Text>
+      </Pressable>
+    </animated.div>
   )
 }
 
@@ -41,17 +81,10 @@ type CardProps = {
   title: string
 }
 
-const getProfileImageUrl = (gender: string, index: number): string => {
-  const IMAGE_API_ENDPOINT =
-    'https://xsgames.co/randomusers/assets/avatars/pixel'
-  let url = IMAGE_API_ENDPOINT
-  url += `/${index}.jpg`
-  return url
-}
-
 export default function Card({ index, title }: CardProps) {
   return (
     <View style={[styles.card, styles.shadow]}>
+      <PullRelease />
       <View style={[styles.content]}>
         <Image
           style={{ height: '100%', width: '100%', borderRadius: 20 }}
@@ -101,7 +134,8 @@ const styles = StyleSheet.create({
   },
   actionBar: {
     backgroundColor: 'rgba(218, 218, 218, 0.5)',
-    paddingVertical: '2rem',
+    paddingTop: '1rem',
+    paddingBottom: '2rem',
     borderBottomEndRadius: 20,
     borderBottomStartRadius: 20,
     flex: 1,
@@ -115,7 +149,7 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: '2rem',
     margin: '1rem',
-    height: '50rem',
+    height: '48rem',
     borderRadius: 20,
     justifyContent: 'flex-end',
     cursor: 'pointer',

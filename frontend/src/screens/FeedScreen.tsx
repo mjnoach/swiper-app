@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native'
-import Card from '../components/Card'
+import Card from '../components/Card/index'
 
 const DATA = [
   {
