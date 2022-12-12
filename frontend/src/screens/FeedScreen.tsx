@@ -9,27 +9,27 @@ import Card from '../components/Card'
 
 const DATA = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    id: '1',
     title: 'Item 1',
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    id: '2',
     title: 'Item 2',
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    id: '3',
     title: 'Item 3',
   },
   {
-    id: 'bd7acbea-c1b1-4652-aed5-3ad53a2b281a',
+    id: '4',
     title: 'Item 4',
   },
   {
-    id: '3ac68afc-c605-48a2-a5f8-fbd91aa97f63',
+    id: '5',
     title: 'Item 5',
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e51d72',
+    id: '6',
     title: 'Item 6',
   },
 ]

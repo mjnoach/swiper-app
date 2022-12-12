@@ -39,13 +39,25 @@ type CardProps = {
   title: string
 }
 
+const getProfileImageUrl = (gender: string, index: number): string => {
+  const IMAGE_API_ENDPOINT = 'https://minimaltoolkit.com/images/randomdata'
+  let url = IMAGE_API_ENDPOINT
+  url +=
+    {
+      M: '/male',
+      F: '/female',
+    }[gender] ?? ''
+  url += `/${index}.jpg`
+  return url
+}
+
 export default function Card({ index, title }: CardProps) {
   return (
     <View style={[styles.card, styles.shadow]}>
       <View style={[styles.content]}>
         <Image
           style={{ height: '100%', width: '100%', borderRadius: 20 }}
-          source={{ uri: 'https://xsgames.co/randomusers/avatar.php?g=pixel' }}
+          source={{ uri: getProfileImageUrl('F', index) }}
         />
         <View style={styles.details}>
           <View style={styles.text}>
@@ -63,15 +75,17 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     borderRadius: 20,
+    position: 'relative',
   },
   details: {
     borderRadius: 20,
     backgroundColor: 'rgba(218, 218, 218, 0)',
     position: 'absolute',
+    width: '100%',
     bottom: 0,
   },
   text: {
-    padding: '2rem',
+    paddingHorizontal: '2rem',
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     backgroundColor: 'rgba(218, 218, 218, 0.5)',
