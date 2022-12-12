@@ -1,9 +1,24 @@
 import { H1, H2 } from '@expo/html-elements'
 import { animated, useSpring } from '@react-spring/web'
+import { useDrag } from '@use-gesture/react'
 import { useState } from 'react'
 import { Image, Pressable, StyleSheet, Text } from 'react-native'
 import { View } from '../Themed'
 import { getProfileImageUrl } from './utils'
+
+function PullRelease(props) {
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
+
+  const bind = useDrag(({ down, movement: [mx, my] }) => {
+    api.start({ x: down ? mx : 0, y: down ? my : 0, immediate: down })
+  })
+
+  return (
+    <animated.div {...bind()} style={{ x, y, touchAction: 'none' }}>
+      {props.children}
+    </animated.div>
+  )
+}
 
 type ButtonProps = {
   title: string
@@ -83,22 +98,24 @@ type CardProps = {
 
 export default function Card({ index, title }: CardProps) {
   return (
-    <View style={[styles.card, styles.shadow]}>
-      <PullRelease />
-      <View style={[styles.content]}>
-        <Image
-          style={{ height: '100%', width: '100%', borderRadius: 20 }}
-          source={{ uri: getProfileImageUrl('F', index) }}
-        />
-        <View style={styles.details}>
-          <View style={styles.text}>
-            <H1 selectable={false}>{title}</H1>
-            <H2 selectable={false}>id: {index}</H2>
+    <PullRelease>
+      <View style={[styles.card, styles.shadow]}>
+        <View style={[styles.content]}>
+          <Image
+            resizeMode="cover"
+            style={styles.image}
+            source={{ uri: getProfileImageUrl('F', index) }}
+          />
+          <View style={styles.details}>
+            <View style={styles.text}>
+              <H1 selectable={false}>{title}</H1>
+              <H2 selectable={false}>id: {index}</H2>
+            </View>
+            <ActionBar />
           </View>
-          <ActionBar />
         </View>
       </View>
-    </View>
+    </PullRelease>
   )
 }
 
@@ -107,6 +124,11 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     position: 'relative',
+  },
+  image: {
+    flex: 1,
+    marginBottom: '13rem',
+    borderRadius: 20,
   },
   details: {
     borderRadius: 20,

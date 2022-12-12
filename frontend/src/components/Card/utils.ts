@@ -1,7 +1,6 @@
 export const getProfileImageUrl = (gender: string, index: number): string => {
-  const IMAGE_API_ENDPOINT =
-    'https://xsgames.co/randomusers/assets/avatars/pixel'
+  const IMAGE_API_ENDPOINT = 'https://avatars.dicebear.com/api/micah'
   let url = IMAGE_API_ENDPOINT
-  url += `/${index}.jpg`
+  url += `/${index}.svg`
   return url
 }
