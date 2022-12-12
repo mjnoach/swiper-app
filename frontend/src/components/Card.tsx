@@ -10,7 +10,9 @@ type ButtonProps = {
 function Button(props: ButtonProps) {
   return (
     <Pressable style={[styles.button, styles.shadow]} onPress={props.onPress}>
-      <Text style={styles.buttonText}>{props.title}</Text>
+      <Text style={styles.buttonText} selectable={false}>
+        {props.title}
+      </Text>
     </Pressable>
   )
 }
@@ -40,13 +42,9 @@ type CardProps = {
 }
 
 const getProfileImageUrl = (gender: string, index: number): string => {
-  const IMAGE_API_ENDPOINT = 'https://minimaltoolkit.com/images/randomdata'
+  const IMAGE_API_ENDPOINT =
+    'https://xsgames.co/randomusers/assets/avatars/pixel'
   let url = IMAGE_API_ENDPOINT
-  url +=
-    {
-      M: '/male',
-      F: '/female',
-    }[gender] ?? ''
   url += `/${index}.jpg`
   return url
 }
@@ -61,8 +59,8 @@ export default function Card({ index, title }: CardProps) {
         />
         <View style={styles.details}>
           <View style={styles.text}>
-            <H1>{title}</H1>
-            <H2>id: {index}</H2>
+            <H1 selectable={false}>{title}</H1>
+            <H2 selectable={false}>id: {index}</H2>
           </View>
           <ActionBar />
         </View>
