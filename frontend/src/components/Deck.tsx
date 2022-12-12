@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundRepeat: 'no-repeat',
     boxShadow:
       '0 12.5px 100px -10px rgba(50, 50, 73, 0.4), 0 10px 10px -10px rgba(50, 50, 73, 0.3)',
+    touchAction: 'none',
   },
   details: {
     borderRadius: 20,
