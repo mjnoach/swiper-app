@@ -5,36 +5,16 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native'
-import Card from '../components/Card/index'
+import Card from '../components/Card'
+import { Profile } from './models.types'
 
-const DATA = [
-  {
-    id: '1',
-    title: 'Item 1',
-  },
-  {
-    id: '2',
-    title: 'Item 2',
-  },
-  {
-    id: '3',
-    title: 'Item 3',
-  },
-  {
-    id: '4',
-    title: 'Item 4',
-  },
-  {
-    id: '5',
-    title: 'Item 5',
-  },
-  {
-    id: '6',
-    title: 'Item 6',
-  },
-]
-
-const renderItem = ({ item }) => <Card title={item.title} index={item.id} />
+const NUM_OF_CARDS = 2
+const profiles: Profile[] = Array.from({ length: NUM_OF_CARDS }).map(
+  (_, i) => ({
+    id: i,
+    title: `Item ${i}`,
+  }),
+)
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
@@ -48,6 +28,20 @@ export default function FeedScreen() {
     wait(1500).then(() => setRefreshing(false))
   }, [])
 
+  // return (
+  //   <View style={styles.container}>
+  //     <Deck profiles={profiles} />
+  //   </View>
+  // )
+
+  const Cards = () => (
+    <>
+      {profiles.map((p) => (
+        <Card key={p.id} {...p} />
+      ))}
+    </>
+  )
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -55,9 +49,9 @@ export default function FeedScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
         pagingEnabled
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        data={profiles}
+        renderItem={Cards}
+        keyExtractor={(item, i) => profiles[i].id.toString()}
       />
     </SafeAreaView>
   )
@@ -66,9 +60,10 @@ export default function FeedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  background: {
-    flex: 1,
-    justifyContent: 'center',
+    backgroundColor: 'lightblue',
+    // cursor:
+    //   "url('https://uploads.codesandbox.io/uploads/user/b3e56831-8b98-4fee-b941-0e27f39883ab/Ad1_-cursor.png') 39 39,\n    auto",
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
 })

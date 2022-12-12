@@ -3,8 +3,8 @@ import { animated, useSpring } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
 import { useState } from 'react'
 import { Image, Pressable, StyleSheet, Text } from 'react-native'
-import { View } from '../Themed'
-import { getProfileImageUrl } from './utils'
+import { getProfileImageUrl } from '../utils'
+import { View } from './Themed'
 
 function PullRelease(props) {
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
@@ -53,13 +53,7 @@ function Button(props: ButtonProps) {
   return (
     <animated.div style={animatedProps}>
       <Pressable
-        style={[
-          styles.button,
-          styles.shadow,
-          hover && {
-            backgroundColor: '#eee',
-          },
-        ]}
+        style={[styles.button, styles.shadow]}
         onPress={props.onPress}
         onHoverIn={handleHoverIn}
         onHoverOut={handleHoverOut}
@@ -92,11 +86,12 @@ function ActionBar(props) {
 }
 
 type CardProps = {
-  index: number
+  id: number
   title: string
 }
+type Card = CardProps
 
-export default function Card({ index, title }: CardProps) {
+export default function Card({ id, title }: CardProps) {
   return (
     <PullRelease>
       <View style={[styles.card, styles.shadow]}>
@@ -104,12 +99,12 @@ export default function Card({ index, title }: CardProps) {
           <Image
             resizeMode="cover"
             style={styles.image}
-            source={{ uri: getProfileImageUrl('F', index) }}
+            source={{ uri: getProfileImageUrl(id) }}
           />
           <View style={styles.details}>
             <View style={styles.text}>
               <H1 selectable={false}>{title}</H1>
-              <H2 selectable={false}>id: {index}</H2>
+              <H2 selectable={false}>id: {id}</H2>
             </View>
             <ActionBar />
           </View>
@@ -172,6 +167,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '2rem',
     margin: '1rem',
     height: '48rem',
+    flex: 1,
     borderRadius: 20,
     justifyContent: 'flex-end',
     cursor: 'pointer',
