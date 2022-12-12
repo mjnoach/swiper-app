@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet } from 'react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { View } from './components/Themed'
 
 import useCachedResources from './hooks/useCachedResources'
@@ -15,22 +14,28 @@ export default function App() {
     return null
   }
   return (
-    <SafeAreaProvider style={styles.app}>
-      <View style={[styles.centered]}>
+    <View style={[styles.app]}>
+      <View style={styles.centered}>
         <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </View>
-    </SafeAreaProvider>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   app: {
-    backgroundColor: 'darkslategrey',
+    flex: 1,
+    paddingTop: '4rem',
   },
   centered: {
+    marginHorizontal: 'auto',
     flex: 1,
-    maxWidth: '80%',
-    maxHeight: '60%',
+    width: '40rem',
+    maxWidth: '90%',
+    maxHeight: '60rem',
+    borderStyle: 'solid',
+    borderWidth: 20,
+    borderRadius: 20,
   },
 })
