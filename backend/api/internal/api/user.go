@@ -69,6 +69,8 @@ func GetProfiles(ctx echo.Context) error {
 }
 
 func Swipe(ctx echo.Context) error {
+	// user := new(models.User)
+	// ctx.Bind(user)
 	id, _ := strconv.Atoi(ctx.QueryParam("id"))
 	res, err := service.Swipe(id)
 	if err != nil {

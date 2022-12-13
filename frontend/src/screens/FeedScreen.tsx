@@ -2,20 +2,32 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Deck } from '../components/Deck/index'
+import { useSession } from '../components/SessionContext'
 import { APIROOT } from '../config'
 import { User } from '../models.types'
 
 export default function FeedScreen() {
   const [profiles, setProfiles] = React.useState<User[]>([])
+  const { getCurrentUser } = useSession()
 
   useEffect(() => {
     fetchProfiles()
   }, [])
 
   async function fetchProfiles() {
-    const response = await axios.get<User[]>(`${APIROOT}/profiles`)
-    const profiles = response.data ?? []
-    setProfiles(profiles.slice(0, 10))
+    try {
+      const user = await getCurrentUser()
+      const response = await axios.get<User[]>(
+        `${APIROOT}/profiles?id=${user?.id}`,
+      )
+      const profiles = response.data ?? []
+      setProfiles(profiles.slice(0, 10))
+    } catch (error) {
+      console.log(
+        '🚀 ~ file: FeedScreen.tsx ~ line 30 ~ fetchProfiles ~ error',
+        error,
+      )
+    }
   }
 
   return (

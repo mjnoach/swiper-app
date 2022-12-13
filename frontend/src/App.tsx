@@ -3,32 +3,30 @@ import { StyleSheet } from 'react-native'
 import { View } from './components/Themed'
 
 import { MantineProvider } from '@mantine/core'
+import { SessionProvider } from './components/SessionContext'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
-import storage from './storage'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
   const colorScheme = useColorScheme()
-
-  storage.get('user').then((user) => {
-    console.log('🚀 ~ file: App.tsx ~ line 16 ~ App ~ user', user)
-  })
 
   if (!isLoadingComplete) {
     return null
   }
 
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <View style={[styles.app]}>
-        <View style={styles.centered}>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
+    <SessionProvider>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <View style={[styles.app]}>
+          <View style={styles.centered}>
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </View>
         </View>
-      </View>
-    </MantineProvider>
+      </MantineProvider>
+    </SessionProvider>
   )
 }
 

@@ -30,8 +30,15 @@ export function Deck(props: DeckProps) {
           >
             <View style={styles.details}>
               <H1 selectable={false}>{props.profiles[i].name}</H1>
-              <H2 selectable={false}>{props.profiles[i].age}</H2>
-              <H2 selectable={false}>id: {props.profiles[i].id}</H2>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <H2 selectable={false}>{props.profiles[i].age}</H2>
+                <H2 selectable={false}>id: {props.profiles[i].id}</H2>
+              </View>
             </View>
           </animated.div>
         </animated.div>

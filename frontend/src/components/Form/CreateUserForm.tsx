@@ -14,16 +14,24 @@ import { User } from '../../models.types'
 import storage from '../../storage'
 
 async function createUser() {
-  const response = await axios.get<User>(`${APIROOT}/user/create`)
-  const user = response.data
-  storage.set('user', user)
+  try {
+    const response = await axios.get<User>(`${APIROOT}/user/create`)
+    const user = response.data
+    storage.set('user', user)
+    return user
+  } catch (error) {
+    console.log(
+      '🚀 ~ file: CreateUserForm.tsx ~ line 23 ~ createUser ~ error',
+      error,
+    )
+  }
 }
 
 export function CreateUserForm({ navigation }) {
   const form = useForm({
     initialValues: {
       email: 'test@mail.com',
-      password: 'asdasd',
+      password: 'aUbu5D8ZPyVSS6W',
       termsOfService: false,
     },
     validate: {
@@ -34,7 +42,11 @@ export function CreateUserForm({ navigation }) {
 
   async function handleFormSubmit() {
     createUser()
-      .then(() => {
+      .then((user) => {
+        console.log(
+          '🚀 ~ file: CreateUserForm.tsx ~ line 39 ~ .then ~ user',
+          user,
+        )
         navigation.navigate('Root')
       })
       .catch((error) => {
