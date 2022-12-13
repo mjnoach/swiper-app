@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Deck } from '../components/Deck'
-import { Profile } from './models.types'
+import { Profile } from '../models.types'
 
 const NUM_OF_CARDS = 5
 const profiles: Profile[] = Array.from({ length: NUM_OF_CARDS }).map(

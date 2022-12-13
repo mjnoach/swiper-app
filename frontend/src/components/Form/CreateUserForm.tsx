@@ -9,6 +9,8 @@ import {
 import { useForm } from '@mantine/form'
 import axios from 'axios'
 import { StyleSheet } from 'react-native'
+import { User } from '../../models.types'
+import storage from '../../storage'
 
 export function CreateUserForm({ navigation }) {
   const form = useForm({
@@ -25,14 +27,9 @@ export function CreateUserForm({ navigation }) {
 
   async function createUser() {
     const APIROOT = 'http://localhost:8080'
-    const response = await axios.get(`${APIROOT}/user/create`)
+    const response = await axios.get<User>(`${APIROOT}/user/create`)
     const user = response.data
-    console.log(
-      '🚀 ~ file: CreateUserForm.tsx ~ line 31 ~ createUser ~ user',
-      user,
-    )
-    // persist user data in session cookie
-    return user
+    storage.set('user', user)
   }
 
   async function handleFormSubmit() {

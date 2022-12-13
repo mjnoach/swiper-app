@@ -6,14 +6,20 @@ import { MantineProvider } from '@mantine/core'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
+import storage from './storage'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
   const colorScheme = useColorScheme()
 
+  storage.get('user').then((user) => {
+    console.log('🚀 ~ file: App.tsx ~ line 16 ~ App ~ user', user)
+  })
+
   if (!isLoadingComplete) {
     return null
   }
+
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <View style={[styles.app]}>

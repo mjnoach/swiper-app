@@ -3,7 +3,7 @@ import { animated, to as interpolate, useSprings } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { Profile } from '../screens/models.types'
+import { Profile } from '../models.types'
 import { getProfileImageUrl } from '../utils'
 import { View } from './Themed'
 
