@@ -67,3 +67,13 @@ func GetProfiles(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, res)
 }
+
+func Swipe(ctx echo.Context) error {
+	id, _ := strconv.Atoi(ctx.QueryParam("id"))
+	res, err := service.Swipe(id)
+	if err != nil {
+		utils.CheckErr(err, "")
+		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return ctx.JSON(http.StatusOK, res)
+}

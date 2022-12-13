@@ -55,3 +55,11 @@ func GetProfiles(id int) ([]*models.User, error) {
 	}
 	return users, nil
 }
+
+func Swipe(id int) ([]*models.User, error) {
+	users, err := repo.Swipe(id)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}

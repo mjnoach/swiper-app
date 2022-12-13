@@ -34,6 +34,7 @@ func main() {
 	router.POST("/user/create", api.CreateUser)
 	router.GET("/user/:id", api.GetUser)
 	router.GET("/profiles", api.GetProfiles)
+	router.POST("/swipe", api.Swipe)
 
 	router.Logger.Fatal(router.Start(host))
 }
