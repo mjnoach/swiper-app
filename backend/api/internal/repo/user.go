@@ -84,7 +84,7 @@ func GetProfiles(id int) ([]*models.User, error) {
 }
 
 func Swipe(id int) ([]*models.User, error) {
-	return nil nil
+	return nil, nil
 	// rows, err := db.Client.Query("SELECT * FROM profile WHERE id != ?", id)
 	// if err != nil {
 	// 	return nil, err

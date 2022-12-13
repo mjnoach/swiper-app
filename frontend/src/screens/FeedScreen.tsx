@@ -14,7 +14,7 @@ export default function FeedScreen() {
 
   async function fetchProfiles() {
     const response = await axios.get<User[]>(`${APIROOT}/profiles`)
-    const profiles = response.data
+    const profiles = response.data ?? []
     setProfiles(profiles.slice(0, 10))
   }
 

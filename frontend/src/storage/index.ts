@@ -8,6 +8,7 @@ type Storage = {
 export default {
   set: async (key, value) => {
     try {
+      AsyncStorage.removeItem(key)
       if (typeof value !== 'string') {
         value = JSON.stringify(value)
       }

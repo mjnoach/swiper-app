@@ -12,7 +12,7 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
-import { ColorSchemeName, Pressable } from 'react-native'
+import { ColorSchemeName, Pressable, StyleSheet } from 'react-native'
 
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
@@ -86,30 +86,16 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarStyle: styles.tabBar,
       }}
     >
       <BottomTab.Screen
         name="Feed"
         component={FeedScreen}
-        options={({ navigation }: RootTabScreenProps<'Feed'>) => ({
+        options={() => ({
           title: 'Feed',
           tabBarIcon: ({ color }) => (
             <AntDesign name="rocket1" size={30} color={color} />
-          ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <AntDesign
-                name="user"
-                size={24}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
           ),
         })}
       />
@@ -173,3 +159,12 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    paddingTop: '1rem',
+    paddingBottom: '1rem',
+    height: '5rem',
+    justifyContent: 'center',
+  },
+})
