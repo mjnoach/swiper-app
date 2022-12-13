@@ -13,4 +13,5 @@ type UserInterface interface {
 	CreateUser(u *User) (int, error)
 	GetUser(id int) (*User, error)
 	GetAllUser() ([]*User, error)
+	GetProfiles(id int) ([]*User, error)
 }

@@ -1,24 +1,17 @@
-import { H1, H2 } from '@expo/html-elements'
-import { animated, to as interpolate, useSprings } from '@react-spring/web'
-import { useDrag } from '@use-gesture/react'
-import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
-import { Profile } from '../models.types'
-import { getProfileImageUrl } from '../utils'
-import { View } from './Themed'
+import { useDrag as useDragGesture } from '@use-gesture/react'
+import { useState } from 'react'
+import { useSprings } from 'react-spring'
+import { User } from '../../models.types'
 
-type DeckProps = {
-  profiles: Profile[]
-}
-
-export function Deck(props: DeckProps) {
+export function useDrag(props: { profiles: User[] }) {
   const [gone] = useState(() => new Set())
   const [springs, setSpring] = useSprings(props.profiles.length, (i) => ({
     ...to(i),
     from: from(i),
   }))
+
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
-  const bind = useDrag(
+  const bind = useDragGesture(
     ({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
       // If you flick hard enough it should trigger the card to fly out
       const trigger = parseInt(`${velocity}}`) > 0.2
@@ -54,58 +47,11 @@ export function Deck(props: DeckProps) {
     },
   )
 
-  return (
-    <>
-      {springs.map(({ x, y, rot, scale }, i) => (
-        <animated.div key={i} style={{ ...styles.deck, ...{ x, y } }}>
-          <animated.div
-            {...bind(i)}
-            style={{
-              ...styles.card,
-              transform: interpolate([rot, scale], trans),
-              backgroundImage: `url(${getProfileImageUrl(
-                props.profiles[i].id,
-              )})`,
-            }}
-          >
-            <View style={styles.details}>
-              <H1 selectable={false}>{props.profiles[i].title}</H1>
-              <H2 selectable={false}>id: {props.profiles[i].id}</H2>
-            </View>
-          </animated.div>
-        </animated.div>
-      ))}
-    </>
-  )
+  return { springs, bind }
 }
 
-const styles = StyleSheet.create({
-  deck: {
-    position: 'absolute',
-  },
-  card: {
-    width: '26rem',
-    height: '42rem',
-    borderRadius: 20,
-    backgroundColor: 'white',
-    backgroundSize: '100% 92%',
-    backgroundRepeat: 'no-repeat',
-    boxShadow:
-      '0 12.5px 100px -10px rgba(50, 50, 73, 0.4), 0 10px 10px -10px rgba(50, 50, 73, 0.3)',
-    touchAction: 'none',
-  },
-  details: {
-    borderRadius: 20,
-    backgroundColor: 'rgba(218, 218, 218, 0)',
-    position: 'absolute',
-    width: '100%',
-    bottom: 0,
-    paddingHorizontal: '2rem',
-  },
-})
-
 // These two are just helpers, they curate spring data, values that are later being interpolated into css
-export const to = (i: number) => ({
+const to = (i: number) => ({
   x: 0,
   y: i * -4,
   scale: 1,
@@ -114,7 +60,7 @@ export const to = (i: number) => ({
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const from = (_i: number) => ({ x: 0, rot: 0, scale: 1.5, y: -1000 })
+const from = (_i: number) => ({ x: 0, rot: 0, scale: 1.5, y: -1000 })
 
 // This is being used down there in the view, it interpolates rotation and scale into a css transform
 export const trans = (r: number, s: number) =>

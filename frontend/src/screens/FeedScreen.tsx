@@ -1,17 +1,23 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Deck } from '../components/Deck'
-import { Profile } from '../models.types'
-
-const NUM_OF_CARDS = 5
-const profiles: Profile[] = Array.from({ length: NUM_OF_CARDS }).map(
-  (_, i) => ({
-    id: i,
-    title: `Item ${i}`,
-  }),
-)
+import { Deck } from '../components/Deck/index'
+import { APIROOT } from '../config'
+import { User } from '../models.types'
 
 export default function FeedScreen() {
+  const [profiles, setProfiles] = React.useState<User[]>([])
+
+  useEffect(() => {
+    fetchProfiles()
+  }, [])
+
+  async function fetchProfiles() {
+    const response = await axios.get<User[]>(`${APIROOT}/profiles`)
+    const profiles = response.data
+    setProfiles(profiles.slice(0, 10))
+  }
+
   return (
     <View style={styles.container}>
       <Deck profiles={profiles} />

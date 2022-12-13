@@ -60,3 +60,25 @@ func GetAllUser() ([]*models.User, error) {
 	}
 	return users, nil
 }
+
+func GetProfiles(id int) ([]*models.User, error) {
+	rows, err := db.Client.Query("SELECT * FROM profile WHERE id != ?", id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var profiles []*models.User
+	for rows.Next() {
+		var u models.User
+		err = rows.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age)
+		if err != nil {
+			return nil, err
+		}
+		profiles = append(profiles, &u)
+	}
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+	return profiles, nil
+}

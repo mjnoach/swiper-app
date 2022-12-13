@@ -9,8 +9,15 @@ import {
 import { useForm } from '@mantine/form'
 import axios from 'axios'
 import { StyleSheet } from 'react-native'
+import { APIROOT } from '../../config'
 import { User } from '../../models.types'
 import storage from '../../storage'
+
+async function createUser() {
+  const response = await axios.get<User>(`${APIROOT}/user/create`)
+  const user = response.data
+  storage.set('user', user)
+}
 
 export function CreateUserForm({ navigation }) {
   const form = useForm({
@@ -24,13 +31,6 @@ export function CreateUserForm({ navigation }) {
       password: (value) => (value.length > 0 ? null : 'Invalid password'),
     },
   })
-
-  async function createUser() {
-    const APIROOT = 'http://localhost:8080'
-    const response = await axios.get<User>(`${APIROOT}/user/create`)
-    const user = response.data
-    storage.set('user', user)
-  }
 
   async function handleFormSubmit() {
     createUser()
