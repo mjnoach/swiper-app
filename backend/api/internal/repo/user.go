@@ -6,7 +6,6 @@ import (
 	"dating-app/pkg/utils"
 )
 
-type User models.User
 type UserRepository models.UserInterface
 
 func CreateUser(u *models.User) (int, error) {

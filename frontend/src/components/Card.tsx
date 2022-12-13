@@ -66,7 +66,7 @@ function Button(props: ButtonProps) {
   )
 }
 
-function ActionBar(props) {
+function ActionBar() {
   function handleThumbsDownPress() {
     console.log('thumbs down')
     return null

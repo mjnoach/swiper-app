@@ -8,7 +8,7 @@ import { User } from '../models.types'
 
 export default function FeedScreen() {
   const [profiles, setProfiles] = React.useState<User[]>([])
-  const { getCurrentUser } = useSession()
+  const session = useSession()
 
   useEffect(() => {
     fetchProfiles()
@@ -16,7 +16,7 @@ export default function FeedScreen() {
 
   async function fetchProfiles() {
     try {
-      const user = await getCurrentUser()
+      const user = await session.getCurrentUser()
       const response = await axios.get<User[]>(
         `${APIROOT}/profiles?id=${user?.id}`,
       )

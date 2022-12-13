@@ -1,7 +1,10 @@
 import { useDrag as useDragGesture } from '@use-gesture/react'
+import axios from 'axios'
 import { useState } from 'react'
 import { useSprings } from 'react-spring'
+import { APIROOT } from '../../config'
 import { User } from '../../models.types'
+import { useSession } from '../SessionContext'
 
 export function useDrag(props: { profiles: User[] }) {
   const [gone] = useState(() => new Set())
@@ -9,10 +12,56 @@ export function useDrag(props: { profiles: User[] }) {
     ...to(i),
     from: from(i),
   }))
+  const session = useSession()
+
+  async function swipeLeft() {
+    try {
+      const response = await axios.post<User>(`${APIROOT}/swipe`, {
+        user: session.user?.id,
+        profile: 0,
+        preference: 'no',
+      })
+      const data = response.data
+      console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
+    } catch (error) {
+      console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
+    }
+  }
+
+  async function swipeRight() {
+    try {
+      const user = session.user
+      console.log('🚀 ~ file: useDrag.tsx ~ line 31 ~ swipeRight ~ user', user)
+
+      const response = await axios.post<User>(`${APIROOT}/swipe`, {
+        user: session.user?.id,
+        profile: 0,
+        preference: 'no',
+      })
+      const data = response.data
+      console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
+    } catch (error) {
+      console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
+    }
+  }
+
+  async function handleSwipe(swipeX: number) {
+    if (swipeX === -1) swipeLeft()
+    if (swipeX === 1) swipeRight()
+  }
 
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
   const bind = useDragGesture(
-    ({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
+    ({
+      args: [index],
+      down,
+      movement: [mx],
+      direction: [xDir],
+      velocity,
+      swipe: [swipeX],
+    }) => {
+      handleSwipe(swipeX)
+
       // If you flick hard enough it should trigger the card to fly out
       const trigger = parseInt(`${velocity}}`) > 0.2
       // Direction should either point left or right

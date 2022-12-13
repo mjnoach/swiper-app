@@ -10,8 +10,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type User = models.User
-
 func CreateRandomUser(ctx echo.Context) error {
 	user := new(models.User)
 	ctx.Bind(user)

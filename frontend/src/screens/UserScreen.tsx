@@ -2,14 +2,19 @@ import { H1 } from '@expo/html-elements'
 import { StatusBar } from 'expo-status-bar'
 import { Platform, StyleSheet } from 'react-native'
 import { CreateUserForm } from '../components/Form/CreateUserForm'
+import { useSession } from '../components/SessionContext'
 
 import { View } from '../components/Themed'
 
 export default function UserScreen({ navigation }) {
+  const session = useSession()
+
   return (
     <View style={styles.container}>
       <H1>Create User</H1>
-      <CreateUserForm navigation={navigation} />
+      {session.user === null ? (
+        <CreateUserForm navigation={navigation} />
+      ) : null}
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
