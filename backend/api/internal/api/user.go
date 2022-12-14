@@ -67,13 +67,12 @@ func GetProfiles(ctx echo.Context) error {
 }
 
 func Swipe(ctx echo.Context) error {
-	// user := new(models.User)
-	// ctx.Bind(user)
-	id, _ := strconv.Atoi(ctx.QueryParam("id"))
-	res, err := service.Swipe(id)
+	swipe := new(models.Swipe)
+	ctx.Bind(swipe)
+	hasMatch, err := service.Swipe(swipe)
 	if err != nil {
 		utils.CheckErr(err, "")
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
-	return ctx.JSON(http.StatusOK, res)
+	return ctx.JSON(http.StatusOK, hasMatch)
 }

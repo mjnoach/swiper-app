@@ -9,6 +9,7 @@
   "scripts": {
     "db": "docker build -t dating_app/db ./backend/db; docker run -d -p 3306:3306 --name dating_app_db --env-file ./backend/db/.env dating_app/db;",
     "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM; cd ../..",
+    "backend": "docker rm -f dating_app_db; yarn db; sleep 3 && yarn api;",
     "frontend": "cd ./frontend; yarn web; cd .."
   }
 }

@@ -15,3 +15,10 @@ type UserInterface interface {
 	GetAllUser() ([]*User, error)
 	GetProfiles(id int) ([]*User, error)
 }
+
+type Swipe struct {
+	ID         int    `json:"id"`
+	User       int    `json:"user"`
+	Profile    int    `json:"profile"`
+	Preference string `json:"preference"`
+}

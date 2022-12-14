@@ -20,11 +20,6 @@ const linking: LinkingOptions<RootStackParamList> = {
               UserScreen: 'user',
             },
           },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: 'two',
-            },
-          },
           Feed: {
             screens: {
               FeedScreen: 'feed',

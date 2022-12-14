@@ -47,7 +47,7 @@ export function CreateUserForm({ navigation }) {
           '🚀 ~ file: CreateUserForm.tsx ~ line 39 ~ .then ~ user',
           user,
         )
-        navigation.navigate('Root')
+        // TODO: reload User screen
       })
       .catch((error) => {
         console.error(error)

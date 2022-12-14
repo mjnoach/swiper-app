@@ -6,44 +6,17 @@ import { StyleSheet } from 'react-native'
 import { APIROOT } from '../../config'
 import { User } from '../../models.types'
 import { getProfileImageUrl } from '../../utils'
+import { getCurrentUser } from '../SessionContext'
 import { View } from '../Themed'
 import { trans, useDrag } from './useDrag'
 
-async function swipeLeft(user: User) {
-  try {
-    const response = await axios.post<User>(`${APIROOT}/swipe`, {
-      user: user.id,
-      profile: 0,
-      preference: 'no',
-    })
-    const data = response.data
-    console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
-  } catch (error) {
-    console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
-  }
-}
-
-async function swipeRight(user: User) {
-  try {
-    const response = await axios.post<User>(`${APIROOT}/swipe`, {
-      user: user.id,
-      profile: 0,
-      preference: 'no',
-    })
-    const data = response.data
-    console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
-  } catch (error) {
-    console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
-  }
-}
-
 type DeckProps = {
-  profiles: User[]
+  items: User[]
 }
 
 export function Deck(props: DeckProps) {
   const { springs, bindDrag } = useDrag({
-    deckLength: props.profiles.length,
+    deckItems: props.items,
     swipeLeft,
     swipeRight,
   })
@@ -54,7 +27,7 @@ export function Deck(props: DeckProps) {
         <Card
           key={i}
           spring={spring}
-          {...{ bindDrag, i, profile: props.profiles[i] }}
+          {...{ bindDrag, i, profile: props.items[i] }}
         />
       ))}
     </>
@@ -104,6 +77,34 @@ export function Card({ profile, i, spring, bindDrag }: CardProps) {
       </animated.div>
     </animated.div>
   )
+}
+
+async function swipeLeft(item: { id: number }) {
+  const user = await getCurrentUser()
+  try {
+    await axios.post<User>(`${APIROOT}/swipe`, {
+      user: user?.id,
+      profile: item.id,
+      preference: 'no',
+    })
+  } catch (error) {
+    console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
+  }
+}
+
+async function swipeRight(item: { id: number }) {
+  const user = await getCurrentUser()
+  try {
+    const response = await axios.post<User>(`${APIROOT}/swipe`, {
+      user: user?.id,
+      profile: item.id,
+      preference: 'yes',
+    })
+    const data = response.data
+    console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
+  } catch (error) {
+    console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
+  }
 }
 
 const styles = StyleSheet.create({

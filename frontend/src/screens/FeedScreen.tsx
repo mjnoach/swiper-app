@@ -32,7 +32,7 @@ export default function FeedScreen() {
 
   return (
     <View style={styles.container}>
-      <Deck profiles={profiles} />
+      <Deck items={profiles} />
     </View>
   )
 }

@@ -1,28 +1,21 @@
 import { useDrag as useDragGesture } from '@use-gesture/react'
 import { useState } from 'react'
 import { useSprings } from 'react-spring'
-import { User } from '../../models.types'
 import { useSession } from '../SessionContext'
 
 type UseDragProps = {
-  deckLength: number
-  swipeLeft: (user: User) => void
-  swipeRight: (user: User) => void
+  deckItems: any[]
+  swipeLeft: (item: any) => void
+  swipeRight: (item: any) => void
 }
 
 export function useDrag(props: UseDragProps) {
   const [gone] = useState(() => new Set())
-  const [springs, setSpring] = useSprings(props.deckLength, (i) => ({
+  const [springs, setSpring] = useSprings(props.deckItems.length, (i) => ({
     ...to(i),
     from: from(i),
   }))
   const { user } = useSession()
-
-  async function handleSwipe(swipeX: number) {
-    if (!user) return
-    if (swipeX === -1) props.swipeLeft(user)
-    if (swipeX === 1) props.swipeRight(user)
-  }
 
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
   const bindDrag = useDragGesture(
@@ -33,8 +26,11 @@ export function useDrag(props: UseDragProps) {
       direction: [xDir],
       velocity,
       swipe: [swipeX],
+      cancel,
     }) => {
-      handleSwipe(swipeX)
+      if (!user && Math.abs(mx) > 200) {
+        return cancel()
+      }
 
       // If you flick hard enough it should trigger the card to fly out
       const trigger = parseInt(`${velocity}}`) > 0.2
@@ -43,10 +39,13 @@ export function useDrag(props: UseDragProps) {
       // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
       if (!down && trigger) gone.add(index)
       setSpring.start((i) => {
-        // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
         // We're only interested in changing spring-data for the current spring
         if (index !== i) return
         const isGone = gone.has(index)
+
+        if (isGone && swipeX === -1) props.swipeLeft(props.deckItems[index])
+        if (isGone && swipeX === 1) props.swipeRight(props.deckItems[index])
+
         // When a card is gone it flys out left or right, otherwise goes back to zero
         const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0
         // How much the card tilts, flicking it harder makes it rotate faster
@@ -62,7 +61,7 @@ export function useDrag(props: UseDragProps) {
           config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 },
         }
       })
-      if (!down && gone.size === props.deckLength)
+      if (!down && gone.size === props.deckItems.length)
         setTimeout(() => {
           gone.clear()
           setSpring.start((i) => to(i))

@@ -13,7 +13,7 @@ export const SessionContext = createContext<SessionContext>(
 
 export const useSession = () => useContext(SessionContext)
 
-async function getCurrentUser() {
+export async function getCurrentUser() {
   return await storage.get<User>('user')
 }
 

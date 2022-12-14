@@ -56,10 +56,14 @@ func GetProfiles(id int) ([]*models.User, error) {
 	return users, nil
 }
 
-func Swipe(id int) ([]*models.User, error) {
-	users, err := repo.Swipe(id)
+func Swipe(swipe *models.Swipe) (bool, error) {
+	_, err := repo.Swipe(swipe)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return users, nil
+	hasMatch, err := repo.GetMatchStatus(swipe)
+	if err != nil {
+		return false, err
+	}
+	return hasMatch, nil
 }
