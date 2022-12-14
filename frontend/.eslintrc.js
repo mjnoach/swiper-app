@@ -12,5 +12,6 @@ module.exports = {
     'no-undef': 'off',
     'no-empty-pattern': 'off',
     'prettier/prettier': 'error',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 }

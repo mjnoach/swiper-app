@@ -1,57 +1,31 @@
 import { useDrag as useDragGesture } from '@use-gesture/react'
-import axios from 'axios'
 import { useState } from 'react'
 import { useSprings } from 'react-spring'
-import { APIROOT } from '../../config'
 import { User } from '../../models.types'
 import { useSession } from '../SessionContext'
 
-export function useDrag(props: { profiles: User[] }) {
+type UseDragProps = {
+  deckLength: number
+  swipeLeft: (user: User) => void
+  swipeRight: (user: User) => void
+}
+
+export function useDrag(props: UseDragProps) {
   const [gone] = useState(() => new Set())
-  const [springs, setSpring] = useSprings(props.profiles.length, (i) => ({
+  const [springs, setSpring] = useSprings(props.deckLength, (i) => ({
     ...to(i),
     from: from(i),
   }))
-  const session = useSession()
-
-  async function swipeLeft() {
-    try {
-      const response = await axios.post<User>(`${APIROOT}/swipe`, {
-        user: session.user?.id,
-        profile: 0,
-        preference: 'no',
-      })
-      const data = response.data
-      console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
-    } catch (error) {
-      console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
-    }
-  }
-
-  async function swipeRight() {
-    try {
-      const user = session.user
-      console.log('🚀 ~ file: useDrag.tsx ~ line 31 ~ swipeRight ~ user', user)
-
-      const response = await axios.post<User>(`${APIROOT}/swipe`, {
-        user: session.user?.id,
-        profile: 0,
-        preference: 'no',
-      })
-      const data = response.data
-      console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
-    } catch (error) {
-      console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
-    }
-  }
+  const { user } = useSession()
 
   async function handleSwipe(swipeX: number) {
-    if (swipeX === -1) swipeLeft()
-    if (swipeX === 1) swipeRight()
+    if (!user) return
+    if (swipeX === -1) props.swipeLeft(user)
+    if (swipeX === 1) props.swipeRight(user)
   }
 
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
-  const bind = useDragGesture(
+  const bindDrag = useDragGesture(
     ({
       args: [index],
       down,
@@ -88,7 +62,7 @@ export function useDrag(props: { profiles: User[] }) {
           config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 },
         }
       })
-      if (!down && gone.size === props.profiles.length)
+      if (!down && gone.size === props.deckLength)
         setTimeout(() => {
           gone.clear()
           setSpring.start((i) => to(i))
@@ -96,7 +70,7 @@ export function useDrag(props: { profiles: User[] }) {
     },
   )
 
-  return { springs, bind }
+  return { springs, bindDrag }
 }
 
 // These two are just helpers, they curate spring data, values that are later being interpolated into css
