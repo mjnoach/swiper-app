@@ -81,12 +81,14 @@ export function Card({ profile, i, spring, bindDrag }: CardProps) {
 
 async function swipeLeft(item: { id: number }) {
   const user = await getCurrentUser()
+  const swipe = {
+    user: user?.id,
+    profile: item.id,
+    preference: 'no',
+  }
+  console.log('🚀 ~ file: index.tsx ~ line 89 ~ swipeLeft ~ swipe', swipe)
   try {
-    await axios.post<User>(`${APIROOT}/swipe`, {
-      user: user?.id,
-      profile: item.id,
-      preference: 'no',
-    })
+    await axios.post<User>(`${APIROOT}/swipe`, swipe)
   } catch (error) {
     console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
   }
@@ -94,14 +96,22 @@ async function swipeLeft(item: { id: number }) {
 
 async function swipeRight(item: { id: number }) {
   const user = await getCurrentUser()
+  const swipe = {
+    user: user?.id,
+    profile: item.id,
+    preference: 'yes',
+  }
+  console.log('🚀 ~ file: index.tsx ~ line 104 ~ swipeRight ~ swipe', swipe)
   try {
-    const response = await axios.post<User>(`${APIROOT}/swipe`, {
-      user: user?.id,
-      profile: item.id,
-      preference: 'yes',
-    })
-    const data = response.data
-    console.log('🚀 ~ file: useDrag.tsx ~ line 23 ~ swipeLeft ~ data', data)
+    const response = await axios.post<User>(`${APIROOT}/swipe`, swipe)
+    const hasMatch = response.data
+    console.log(
+      '🚀 ~ file: index.tsx ~ line 109 ~ swipeRight ~ hasMatch',
+      hasMatch,
+    )
+    if (hasMatch) {
+      alert('You have a match!')
+    }
   } catch (error) {
     console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
   }

@@ -32,6 +32,7 @@ func main() {
 	})
 	router.GET("/user/create", api.CreateRandomUser)
 	router.POST("/user/create", api.CreateUser)
+	router.POST("/user/login", api.LogIn)
 	router.GET("/user/:id", api.GetUser)
 	router.GET("/profiles", api.GetProfiles)
 	router.POST("/swipe", api.Swipe)

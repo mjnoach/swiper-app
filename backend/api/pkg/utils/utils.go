@@ -7,21 +7,25 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func Print(message string, obj interface{}) {
+	log.Printf("\n\n🚀 %s \n%v\n\n", message, obj)
+}
+
 func CheckErr(err error, message string) {
 	if err != nil {
-		log.Printf("🚀 %s \n%v", message, err)
+		log.Printf("\n\n🚀 %s \n%v\n\n", message, err)
 	}
 }
 
 func CheckFatal(err error, message string) {
 	if err != nil {
-		log.Fatalf("🚀 %s \n%v", message, err)
+		log.Fatalf("\n\n🚀 %s \n%v\n\n", message, err)
 	}
 }
 
 func CheckPanic(err error, message string) {
 	if err != nil {
-		log.Panicf("🚀 %s \n%v", message, err)
+		log.Panicf("\n\n🚀 %s \n%v\n\n", message, err)
 	}
 }
 

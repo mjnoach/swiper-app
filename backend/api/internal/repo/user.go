@@ -9,7 +9,30 @@ import (
 
 type UserRepository models.UserInterface
 
+func checkUserExists(u *models.User) (int, error) {
+	row := db.Client.QueryRow(`
+		SELECT id FROM profile WHERE email = ?
+	`, u.Email)
+	var user models.User
+	err := row.Scan(&user.ID)
+	if err == sql.ErrNoRows {
+		return -1, nil
+	}
+	if err != nil {
+		return -1, err
+	}
+	return user.ID, nil
+}
+
 func CreateUser(u *models.User) (int, error) {
+	existingUserId, err := checkUserExists(u)
+	if existingUserId != -1 {
+		return -1, nil
+	}
+	if err != nil {
+		return -1, err
+	}
+	utils.Print("Creating user:", u)
 	res, err := db.Client.Exec(`
 		INSERT INTO profile (email, password, name, gender, age) 
 		VALUES (?,?,?,?,?)
@@ -122,4 +145,21 @@ func GetMatchStatus(s *models.Swipe) (bool, error) {
 		return true, nil
 	}
 	return false, nil
+}
+
+func LogIn(user *models.User) (*models.User, error) {
+	row := db.Client.QueryRow(`
+		SELECT * FROM profile 
+		WHERE email = ?
+		AND password = ?
+	`, user.Email, user.Password)
+	var u models.User
+	err := row.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &u, nil
 }

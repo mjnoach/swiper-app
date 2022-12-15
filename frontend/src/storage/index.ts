@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 type Storage = {
   set: (key: string, value: string | object) => Promise<void>
   get: <T>(key: string) => Promise<T | null>
+  remove: (key: string) => Promise<void>
 }
 
 export default {
@@ -25,6 +26,13 @@ export default {
     } catch (e) {
       console.log('🚀 ~ file: index.ts ~ line 28 ~ get: ~ e', e)
       return null as T
+    }
+  },
+  remove: async (key) => {
+    try {
+      await AsyncStorage.removeItem(key)
+    } catch (e) {
+      console.log('🚀 ~ file: index.ts ~ line 28 ~ get: ~ e', e)
     }
   },
 } as Storage

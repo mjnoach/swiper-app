@@ -5,6 +5,8 @@ import storage from '../storage'
 type SessionContext = {
   user: User | null
   getCurrentUser: () => Promise<User | null>
+  setSession(user: User): Promise<void>
+  clearSession(): Promise<void>
 }
 
 export const SessionContext = createContext<SessionContext>(
@@ -21,15 +23,23 @@ export function SessionProvider(props) {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getCurrentUser()
-      setUser(user)
-    }
-    fetchUser()
+    getCurrentUser().then((user) => setUser(user))
   }, [])
 
+  async function setSession(user: User) {
+    setUser(user)
+    storage.set('user', user)
+  }
+
+  async function clearSession() {
+    setUser(null)
+    storage.remove('user')
+  }
+
   return (
-    <SessionContext.Provider value={{ user, getCurrentUser }}>
+    <SessionContext.Provider
+      value={{ user, getCurrentUser, setSession, clearSession }}
+    >
       {props.children}
     </SessionContext.Provider>
   )

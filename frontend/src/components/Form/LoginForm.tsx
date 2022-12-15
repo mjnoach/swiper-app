@@ -9,26 +9,23 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import axios from 'axios'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { APIROOT } from '../../config'
 import { User } from '../../models.types'
 import { useSession } from '../SessionContext'
 
-async function createUser({ email, password }: Partial<User>) {
-  const response = await axios.post<User>(`${APIROOT}/user/create`, {
+async function logIn({ email, password }: Partial<User>) {
+  const response = await axios.post<User>(`${APIROOT}/user/login`, {
     email,
     password,
   })
   const user = response.data
-  console.log(
-    '🚀 ~ file: CreateUserForm.tsx ~ line 27 ~ createUser ~ user',
-    user,
-  )
+  console.log('🚀 ~ file: LoginForm.tsx ~ line 25 ~ logIn ~ user', user)
   return user
 }
 
-export function CreateUserForm() {
+export function LoginForm() {
   const form = useForm({
     initialValues: {
       email: 'test@mail.com',
@@ -43,9 +40,8 @@ export function CreateUserForm() {
   const { setSession } = useSession()
   const [errorMessage, setErrorMessage] = useState('')
 
-  async function handleFormSubmit(values) {
-    const { email, password } = values
-    createUser({ email, password })
+  async function handleFormSubmit({ email, password }) {
+    logIn({ email, password })
       .then((user) => user && setSession(user))
       .catch((e) => {
         console.log(
@@ -90,7 +86,7 @@ export function CreateUserForm() {
         />
         <Group position="right" mt="md">
           <Button type="submit" color="dark">
-            Submit
+            Log In
           </Button>
         </Group>
       </form>

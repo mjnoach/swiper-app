@@ -6,29 +6,31 @@ import { useSession } from '../components/SessionContext'
 import { APIROOT } from '../config'
 import { User } from '../models.types'
 
-export default function FeedScreen() {
+async function fetchProfiles(user: User | null) {
+  if (!user) return []
+  const response = await axios.get<User[]>(`${APIROOT}/profiles?id=${user?.id}`)
+  const profiles = response.data ?? []
+  return profiles
+}
+
+export default function FeedScreen({ navigation }) {
   const [profiles, setProfiles] = React.useState<User[]>([])
-  const session = useSession()
+  const { getCurrentUser } = useSession()
+
+  function refreshFeed() {
+    getCurrentUser()
+      .then((user) => fetchProfiles(user))
+      .then((profiles) => setProfiles(profiles.slice(0, 10)))
+  }
 
   useEffect(() => {
-    fetchProfiles()
-  }, [])
+    const unsubscribe = navigation.addListener('focus', refreshFeed)
+    return unsubscribe
+  }, [navigation])
 
-  async function fetchProfiles() {
-    try {
-      const user = await session.getCurrentUser()
-      const response = await axios.get<User[]>(
-        `${APIROOT}/profiles?id=${user?.id}`,
-      )
-      const profiles = response.data ?? []
-      setProfiles(profiles.slice(0, 10))
-    } catch (error) {
-      console.log(
-        '🚀 ~ file: FeedScreen.tsx ~ line 30 ~ fetchProfiles ~ error',
-        error,
-      )
-    }
-  }
+  useEffect(() => {
+    refreshFeed()
+  }, [navigation])
 
   return (
     <View style={styles.container}>
