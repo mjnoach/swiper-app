@@ -1,9 +1,14 @@
 # Dating App
 
+  .                        | .                         | .                     
+:-------------------------:|:-------------------------:|:-------------------------:
+![](/assets/app-screen-1.png)         |  ![](/assets/app-screen-2.png)       |  ![](/assets/app-screen-3.png)       
+
+
 ## `🚀 start`
 
 ```console
-// create `.env` files
+// set up the environment
 
 cd backend/api; cp .env.example .env; cd ../..;
 cd backend/db; cp .env.example .env; cd ../..;
@@ -11,6 +16,7 @@ cd frontend; cp .env.example .env; cd ..;
 
 
 // run the backend
+// this script recreates the db container which results in data loss
 
 yarn backend
 
@@ -76,7 +82,3 @@ cd ../..;
 
 yarn frontend
 ```
-
-
-<!-- TODO -->
-<!-- - ?? export $PATH with `go` and `sql-migrate` ? -->
