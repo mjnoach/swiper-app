@@ -30,3 +30,17 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >
+
+export type User = {
+  id: number
+  email: string
+  password: string
+  name: string
+  gender: string
+  age: number
+}
+
+export type AuthResponse = {
+  jwt: string
+  user: User
+}

@@ -1,10 +1,9 @@
 import { H1, H2 } from '@expo/html-elements'
 import { animated, to as interpolate } from '@react-spring/web'
-import axios from 'axios'
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { APIROOT } from '../../config'
-import { User } from '../../models.types'
+import { api } from '../../api'
+import { User } from '../../types'
 import { getProfileImageUrl } from '../../utils'
 import { getCurrentUser } from '../SessionContext'
 import { View } from '../Themed'
@@ -20,6 +19,8 @@ export function Deck(props: DeckProps) {
     swipeLeft,
     swipeRight,
   })
+
+  // TODO Deck list pagination
 
   return (
     <>
@@ -88,7 +89,7 @@ async function swipeLeft(item: { id: number }) {
   }
   console.log('🚀 ~ file: index.tsx ~ line 89 ~ swipeLeft ~ swipe', swipe)
   try {
-    await axios.post<User>(`${APIROOT}/swipe`, swipe)
+    await api.post<User[]>(`/swipe`, swipe)
   } catch (error) {
     console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
   }
@@ -103,7 +104,7 @@ async function swipeRight(item: { id: number }) {
   }
   console.log('🚀 ~ file: index.tsx ~ line 104 ~ swipeRight ~ swipe', swipe)
   try {
-    const response = await axios.post<User>(`${APIROOT}/swipe`, swipe)
+    const response = await api.post<User[]>(`/swipe`, swipe)
     const hasMatch = response.data
     console.log(
       '🚀 ~ file: index.tsx ~ line 109 ~ swipeRight ~ hasMatch',

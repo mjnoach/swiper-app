@@ -8,24 +8,22 @@ import {
   TextInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import axios from 'axios'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { APIROOT } from '../../config'
-import { User } from '../../models.types'
+import { api } from '../../api'
+import { AuthResponse, User } from '../../types'
 import { useSession } from '../SessionContext'
 
 async function createUser({ email, password }: Partial<User>) {
-  const response = await axios.post<User>(`${APIROOT}/user/create`, {
+  const response = await api.post<AuthResponse>(`/auth/register`, {
     email,
     password,
   })
-  const user = response.data
   console.log(
-    '🚀 ~ file: CreateUserForm.tsx ~ line 27 ~ createUser ~ user',
-    user,
+    '🚀 ~ file: CreateUserForm.tsx ~ line 24 ~ createUser ~ response?.data',
+    response?.data,
   )
-  return user
+  return response?.data
 }
 
 export function CreateUserForm() {
@@ -46,13 +44,13 @@ export function CreateUserForm() {
   async function handleFormSubmit(values) {
     const { email, password } = values
     createUser({ email, password })
-      .then((user) => user && setSession(user))
+      .then(({ user, jwt }) => user && setSession(user, jwt))
       .catch((e) => {
         console.log(
           '🚀 ~ file: CreateUserForm.tsx ~ line 65 ~ handleFormSubmit ~ e',
-          e.response.data,
+          e?.response?.data,
         )
-        setErrorMessage(e.response.data)
+        setErrorMessage(e?.response?.data)
       })
   }
 

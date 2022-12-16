@@ -15,24 +15,25 @@ export default {
       }
       await AsyncStorage.setItem(key, value)
     } catch (e) {
-      console.log('🚀 ~ file: index.ts ~ line 15 ~ set: ~ e', e)
+      console.log('🚀 ~ file: storage.ts ~ line 18 ~ set: ~ e', e)
     }
   },
   get: async <T>(key) => {
+    let value = await AsyncStorage.getItem(key)
+    if (value === null) return null as T
     try {
-      let value = await AsyncStorage.getItem(key)
-      value = value !== null ? JSON.parse(value) : null
+      value = JSON.parse(value)
+      // value = value !== null ? JSON.parse(value) : null
       return value as T
     } catch (e) {
-      console.log('🚀 ~ file: index.ts ~ line 28 ~ get: ~ e', e)
-      return null as T
+      return value as string
     }
   },
   remove: async (key) => {
     try {
       await AsyncStorage.removeItem(key)
     } catch (e) {
-      console.log('🚀 ~ file: index.ts ~ line 28 ~ get: ~ e', e)
+      console.log('🚀 ~ file: storage.ts ~ line 35 ~ remove: ~ e', e)
     }
   },
 } as Storage

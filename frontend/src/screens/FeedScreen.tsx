@@ -1,14 +1,13 @@
-import axios from 'axios'
 import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { api } from '../api'
 import { Deck } from '../components/Deck/index'
 import { useSession } from '../components/SessionContext'
-import { APIROOT } from '../config'
-import { User } from '../models.types'
+import { User } from '../types'
 
 async function fetchProfiles(user: User | null) {
   if (!user) return []
-  const response = await axios.get<User[]>(`${APIROOT}/profiles?id=${user?.id}`)
+  const response = await api.get<User[]>(`profiles?id=${user?.id}`)
   const profiles = response.data ?? []
   return profiles
 }

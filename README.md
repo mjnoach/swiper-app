@@ -3,22 +3,19 @@
 ## `🚀 start`
 
 ```console
-// create `backend/.env` file
+// create `.env` files
 
-cd backend; cp .env.example .env; cd ..;
-
-
-// run the db
-
-yarn db
+cd backend/api; cp .env.example .env; cd ../..;
+cd backend/db; cp .env.example .env; cd ../..;
+cd frontend; cp .env.example .env; cd ..;
 
 
-// run the api
+// run the backend
 
-yarn api
+yarn backend
 
 
-// run the frontend
+// install & run the frontend
 
 yarn frontend
 ```
@@ -26,6 +23,11 @@ yarn frontend
 ## `db`
 
 ```console
+// run the db
+
+yarn db
+
+
 // build & run the db container
 
 docker build -t dating_app/db ./backend/db;
@@ -38,6 +40,11 @@ ENV options:
   - `MIGRATE=down`
 
 ```console
+// run the api
+
+yarn api
+
+
 // build & run the api container
 
 docker build -t dating_app/api ./backend/api;
@@ -65,6 +72,8 @@ cd ../..;
 ## `frontend`
 
 ```console
+// install & run the frontend
+
 yarn frontend
 ```
 

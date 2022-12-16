@@ -76,11 +76,3 @@ func Swipe(swipe *models.Swipe) (bool, error) {
 	}
 	return hasMatch, nil
 }
-
-func LogIn(user *models.User) (*models.User, error) {
-	user, err := repo.LogIn(user)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
-}

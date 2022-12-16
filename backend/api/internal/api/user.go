@@ -24,20 +24,6 @@ func CreateRandomUser(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, user)
 }
 
-func CreateUser(ctx echo.Context) error {
-	user := new(models.User)
-	ctx.Bind(user)
-	user, err := service.CreateUser(user)
-	if err != nil {
-		utils.CheckErr(err, "")
-		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
-	}
-	if user == nil {
-		return ctx.JSON(http.StatusConflict, "User already exists")
-	}
-	return ctx.JSON(http.StatusCreated, user)
-}
-
 func GetUser(ctx echo.Context) error {
 	id, _ := strconv.Atoi(ctx.Param("id"))
 	user, err := service.GetUser(id)
@@ -76,18 +62,4 @@ func Swipe(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return ctx.JSON(http.StatusOK, hasMatch)
-}
-
-func LogIn(ctx echo.Context) error {
-	user := new(models.User)
-	ctx.Bind(user)
-	user, err := service.LogIn(user)
-	if err != nil {
-		utils.CheckErr(err, "")
-		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
-	}
-	if user == nil {
-		return ctx.JSON(http.StatusConflict, "User not found")
-	}
-	return ctx.JSON(http.StatusOK, user)
 }

@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { User } from '../models.types'
 import storage from '../storage'
+import { User } from '../types'
 
 type SessionContext = {
   user: User | null
   getCurrentUser: () => Promise<User | null>
-  setSession(user: User): Promise<void>
+  setSession(user: User, jwt: string): Promise<void>
   clearSession(): Promise<void>
 }
 
@@ -26,14 +26,16 @@ export function SessionProvider(props) {
     getCurrentUser().then((user) => setUser(user))
   }, [])
 
-  async function setSession(user: User) {
+  async function setSession(user: User, jwt: string) {
     setUser(user)
     storage.set('user', user)
+    storage.set('jwt', jwt)
   }
 
   async function clearSession() {
     setUser(null)
     storage.remove('user')
+    storage.remove('jwt')
   }
 
   return (

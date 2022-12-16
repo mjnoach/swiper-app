@@ -16,26 +16,34 @@ import (
 var router = echo.New()
 
 func main() {
-	godotenv.Load()
-	hostname := os.Getenv("APIHOST")
-	port := os.Getenv("APIPORT")
-	host := fmt.Sprintf("%s:%s", hostname, port)
-
 	// Middleware
-	router.Use(middleware.Logger())
+	router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
 	router.Use(middleware.Recover())
 	router.Use(middleware.CORS())
+
+	auth := router.Group("")
+	auth.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningKey: []byte(os.Getenv("JWTSECRET")),
+	}))
 
 	// Routes
 	router.GET("/", func(ctx echo.Context) error {
 		return ctx.String(http.StatusOK, "Hello World!")
 	})
 	router.GET("/user/create", api.CreateRandomUser)
-	router.POST("/user/create", api.CreateUser)
-	router.POST("/user/login", api.LogIn)
+	router.POST("/auth/register", api.Register)
+	router.POST("/auth/login", api.LogIn)
 	router.GET("/user/:id", api.GetUser)
-	router.GET("/profiles", api.GetProfiles)
-	router.POST("/swipe", api.Swipe)
 
+	// Restricted routes
+	auth.GET("/profiles", api.GetProfiles)
+	auth.POST("/swipe", api.Swipe)
+
+	godotenv.Load()
+	host := fmt.Sprintf("%s:%s", os.Getenv("APIHOST"), os.Getenv("APIPORT"))
+
+	// Start HTTP server
 	router.Logger.Fatal(router.Start(host))
 }
