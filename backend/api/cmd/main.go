@@ -16,6 +16,8 @@ import (
 var router = echo.New()
 
 func main() {
+	godotenv.Load()
+
 	// Middleware
 	router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
@@ -41,7 +43,6 @@ func main() {
 	auth.GET("/profiles", api.GetProfiles)
 	auth.POST("/swipe", api.Swipe)
 
-	godotenv.Load()
 	host := fmt.Sprintf("%s:%s", os.Getenv("APIHOST"), os.Getenv("APIPORT"))
 
 	// Start HTTP server
