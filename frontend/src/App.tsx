@@ -33,16 +33,13 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-    paddingTop: '4rem',
+    height: '100%',
+    width: '100%',
   },
   centered: {
     marginHorizontal: 'auto',
     flex: 1,
-    width: '40rem',
-    maxWidth: '90%',
-    maxHeight: '60rem',
-    borderStyle: 'solid',
-    borderWidth: 20,
-    borderRadius: 20,
+    height: '100%',
+    width: '100%',
   },
 })

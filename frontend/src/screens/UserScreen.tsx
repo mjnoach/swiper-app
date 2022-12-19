@@ -1,8 +1,8 @@
 import { H1 } from '@expo/html-elements'
 import { Button } from '@mantine/core'
 import { StatusBar } from 'expo-status-bar'
-import { Platform, StyleSheet } from 'react-native'
-import { Card } from '../components/Deck/index'
+import { Platform, ScrollView, StyleSheet } from 'react-native'
+import { Card } from '../components/Card'
 import { CreateUserForm } from '../components/Form/CreateUserForm'
 import { LoginForm } from '../components/Form/LoginForm'
 import { useSession } from '../components/SessionContext'
@@ -17,7 +17,7 @@ export default function UserScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {!user ? (
         <>
           <H1>Create User</H1>
@@ -30,33 +30,36 @@ export default function UserScreen() {
           <View style={styles.cardWrapper}>
             <Card profile={user} />
           </View>
-          <View style={styles.button}>
-            <Button color="dark" onClick={handleSignOutClick}>
-              Sign Out
-            </Button>
-          </View>
+          <Button
+            style={styles.button}
+            color="dark"
+            onClick={handleSignOutClick}
+          >
+            Sign Out
+          </Button>
         </>
       )}
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: '1rem',
   },
   cardWrapper: {
-    flex: 1,
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: '2rem',
   },
   button: {
-    marginVertical: '2rem',
+    marginTop: '2rem',
+    marginBottom: '2rem',
   },
   title: {
     fontSize: 20,
