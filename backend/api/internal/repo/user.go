@@ -2,7 +2,7 @@ package repo
 
 import (
 	"database/sql"
-	db "dating-app/internal/db"
+	db "dating-app/internal/db/mysql"
 	"dating-app/pkg/models"
 	"dating-app/pkg/utils"
 )

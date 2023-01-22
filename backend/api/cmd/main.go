@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"dating-app/internal/api"
-	_ "dating-app/internal/db"
+	_ "dating-app/internal/db/mysql"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
