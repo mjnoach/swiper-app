@@ -1,7 +1,7 @@
 package service
 
 import (
-	"dating-app/internal/repo"
+	repo "dating-app/internal/repo/mysql"
 	"dating-app/pkg/models"
 
 	"github.com/brianvoe/gofakeit/v6"
