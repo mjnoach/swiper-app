@@ -1,5 +1,5 @@
 {
-  "name": "heartbeat-expo",
+  "name": "dating-app",
   "version": "1.0.0",
   "main": "./src/index.js",
   "type": "commonjs",
@@ -29,6 +29,7 @@
     "@react-navigation/native-stack": "^6.1.0",
     "@react-spring/web": "^9.5.5",
     "@use-gesture/react": "^10.2.23",
+    "@vercel/edge-config": "^0.1.1",
     "axios": "^1.2.1",
     "expo": "~47.0.8",
     "expo-asset": "~8.6.2",
@@ -63,7 +64,7 @@
     "typescript": "^4.6.3"
   },
   "private": true,
-  "repository": "https://github.com/mjnoach/heartbeat-expo.git",
+  "repository": "https://github.com/mjnoach/dating-app.git",
   "author": {
     "name": "mjnoach",
     "email": "a.siennkiewicz@gmail.com",

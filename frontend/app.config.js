@@ -1,8 +1,8 @@
 export default {
   expo: {
     entryPoint: './src/index.js',
-    name: 'heartbeat-expo',
-    slug: 'heartbeat-expo',
+    name: 'dating-app',
+    slug: 'dating-app',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
