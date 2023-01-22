@@ -25,7 +25,7 @@ func main() {
 	router.Use(middleware.Recover())
 	// appOrigin := []string{os.Getenv("APP-HOST"), os.Getenv("APP-ORIGIN")}.Join(str, ":")
 	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000", "http://localhost:19006", os.Getenv("APP-ORIGIN")},
+		AllowOrigins: []string{"http://localhost:3000", "http://localhost:19006", os.Getenv("APP_ORIGIN")},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 
