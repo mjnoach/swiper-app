@@ -30,7 +30,7 @@ export default {
       favicon: './assets/images/favicon.png',
     },
     extra: {
-      APIROOT: process.env.APIROOT,
+      API_ROOT: process.env.API_ROOT,
     },
   },
 }

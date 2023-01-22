@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { APIROOT } from './config'
+// import { API_ROOT } from './config'
 import storage from './storage'
+import Constants from 'expo-constants'
 
 const api = axios.create({
-  baseURL: APIROOT,
+  baseURL: Constants.expoConfig.extra.API_ROOT,
   headers: {
     'Content-Type': 'application/json',
   },
