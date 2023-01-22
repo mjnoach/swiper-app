@@ -2834,6 +2834,11 @@
   dependencies:
     "@use-gesture/core" "10.2.23"
 
+"@vercel/edge-config@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@vercel/edge-config/-/edge-config-0.1.1.tgz#e5f32ea31fded2a7c4b781a8fbdb26aa69f97f7f"
+  integrity sha512-HDl+12tzW2RHIu8Y804kXg2VpZ02KVb7Nqsa+e1AFoACXXMb+7TfjI1wR19tXoDIu5enQz1dbat40YMEgaH13Q==
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"
