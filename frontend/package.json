@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "prettier --write .; eslint .",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider expo export:web"
+    "build": "expo export:web"
   },
   "jest": {
     "preset": "jest-expo"

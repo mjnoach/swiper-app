@@ -19,12 +19,14 @@ export default {
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
+      bundleIdentifier: 'com.mjnoach.dating-app',
     },
     android: {
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
+      package: 'com.mjnoach.dating_app',
     },
     web: {
       favicon: './assets/images/favicon.png',
