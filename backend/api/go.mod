@@ -11,6 +11,12 @@ require (
 )
 
 require (
+	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/nedpals/postgrest-go v0.1.2 // indirect
+	github.com/nedpals/supabase-go v0.2.0 // indirect
+)
+
+require (
 	github.com/brianvoe/gofakeit/v6 v6.19.0
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
