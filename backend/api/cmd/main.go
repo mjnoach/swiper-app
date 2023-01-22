@@ -23,7 +23,11 @@ func main() {
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 	router.Use(middleware.Recover())
-	router.Use(middleware.CORS())
+	// appOrigin := []string{os.Getenv("APP-HOST"), os.Getenv("APP-ORIGIN")}.Join(str, ":")
+	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000", "http://localhost:19006", os.Getenv("APP-ORIGIN")},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 
 	auth := router.Group("")
 	auth.Use(middleware.JWTWithConfig(middleware.JWTConfig{
