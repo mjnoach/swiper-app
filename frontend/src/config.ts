@@ -1,2 +1,2 @@
 // TODO replace this with env variable
-export const APIROOT = 'http://localhost:8080'
+export const API_URL = 'http://localhost:8080'

@@ -23,11 +23,14 @@ func main() {
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 	router.Use(middleware.Recover())
-	router.Use(middleware.CORS())
+	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{os.Getenv("APP-URL")},
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+	}))
 
 	auth := router.Group("")
 	auth.Use(middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningKey: []byte(os.Getenv("JWTSECRET")),
+		SigningKey: []byte(os.Getenv("JWT-SECRET")),
 	}))
 
 	// Routes
@@ -43,7 +46,7 @@ func main() {
 	auth.GET("/profiles", api.GetProfiles)
 	auth.POST("/swipe", api.Swipe)
 
-	host := fmt.Sprintf("%s:%s", os.Getenv("APIHOST"), os.Getenv("APIPORT"))
+	host := fmt.Sprintf("%s:%s", os.Getenv("API-HOST"), os.Getenv("API-PORT"))
 
 	// Start HTTP server
 	router.Logger.Fatal(router.Start(host))

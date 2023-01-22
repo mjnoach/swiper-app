@@ -47,7 +47,7 @@ export function CreateUserForm() {
       .then(({ user, jwt }) => user && setSession(user, jwt))
       .catch((e) => {
         console.log(
-          '🚀 ~ file: CreateUserForm.tsx ~ line 65 ~ handleFormSubmit ~ e',
+          '🚀 ~ file: CreateUserForm.tsx ~ line 49 ~ handleFormSubmit ~ e',
           e?.response?.data,
         )
         setErrorMessage(e?.response?.data)

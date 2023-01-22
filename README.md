@@ -54,7 +54,7 @@ yarn api
 // build & run the api container
 
 docker build -t dating_app/api ./backend/api;
-docker run -d -p 8080:8080 --name dating_app_api --env-file ./backend/api/.env --env DBHOST=172.17.0.1 dating_app/api;
+docker run -d -p 8080:8080 --name dating_app_api --env-file ./backend/api/.env --env DB-HOST=172.17.0.1 dating_app/api;
 
 
 // OR run directly

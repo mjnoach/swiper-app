@@ -17,4 +17,4 @@ services:
     depends_on:
       - db
     environment:
-      DBHOST: db
+      DB-HOST: db

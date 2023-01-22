@@ -1,9 +1,11 @@
 import axios from 'axios'
-import { APIROOT } from './config'
+import { API_URL } from './config'
 import storage from './storage'
+// import Constants from 'expo-constants'
 
 const api = axios.create({
-  baseURL: APIROOT,
+  // baseURL: Constants.expoConfig.extra.API_URL,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,11 +14,7 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const jwt = await storage.get('jwt')
-    const headers = {
-      ...config.headers,
-      Authorization: `Bearer ${jwt}`,
-    }
-    if (jwt) config.headers = headers
+    if (jwt) config.headers['Authorization'] = `Bearer ${jwt}`
     return config
   },
   (error) => {

@@ -1,8 +1,8 @@
 export default {
   expo: {
     entryPoint: './src/index.js',
-    name: 'heartbeat-expo',
-    slug: 'heartbeat-expo',
+    name: 'dating-app',
+    slug: 'dating-app',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
@@ -19,18 +19,22 @@ export default {
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
+      bundleIdentifier: 'com.mjnoach.dating-app',
     },
     android: {
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
+      package: 'com.mjnoach.dating_app',
     },
     web: {
       favicon: './assets/images/favicon.png',
+      bundler: 'metro',
     },
     extra: {
-      APIROOT: process.env.APIROOT,
+      API_URL: process.env.API_URL,
     },
+    plugins: ['expo-asset', 'expo-font'],
   },
 }

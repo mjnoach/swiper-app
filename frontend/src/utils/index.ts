@@ -1,6 +1,5 @@
+const IMAGE_API_ENDPOINT = 'https://api.dicebear.com/8.x/micah/svg'
+
 export const getProfileImageUrl = (index: number): string => {
-  const IMAGE_API_ENDPOINT = 'https://avatars.dicebear.com/api/micah'
-  let url = IMAGE_API_ENDPOINT
-  url += `/${index}.svg`
-  return url
+  return `${IMAGE_API_ENDPOINT}?seed=${index}`
 }
