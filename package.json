@@ -11,5 +11,8 @@
     "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM; cd ../..",
     "backend": "docker rm -f dating_app_db; yarn db; sleep 3 && yarn api;",
     "frontend": "cd ./frontend; yarn; yarn web; cd .."
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.1"
   }
 }
