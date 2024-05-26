@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "prettier --write .; eslint .",
-    "build": "expo export:web"
+    "build": "expo export -p web"
   },
   "jest": {
     "preset": "jest-expo"
