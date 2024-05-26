@@ -1,4 +1,4 @@
-module dating-app
+module swiper-app
 
 go 1.19
 

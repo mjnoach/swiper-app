@@ -2,9 +2,9 @@ package repo
 
 import (
 	"database/sql"
-	db "dating-app/internal/db"
-	"dating-app/pkg/models"
-	"dating-app/pkg/utils"
+	db "swiper-app/internal/db"
+	"swiper-app/pkg/models"
+	"swiper-app/pkg/utils"
 )
 
 type UserRepository models.UserInterface

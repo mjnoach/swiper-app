@@ -1,5 +1,5 @@
 {
-  "name": "dating-app",
+  "name": "swiper-app",
   "version": "1.0.0",
   "main": "./src/index.js",
   "scripts": {
@@ -64,7 +64,7 @@
     "react-test-renderer": "18.3.1"
   },
   "private": true,
-  "repository": "https://github.com/mjnoach/dating-app.git",
+  "repository": "https://github.com/mjnoach/swiper-app.git",
   "author": {
     "name": "mjnoach",
     "email": "a.siennkiewicz@gmail.com",

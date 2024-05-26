@@ -2,8 +2,8 @@ package repo
 
 import (
 	"database/sql"
-	db "dating-app/internal/db"
-	"dating-app/pkg/models"
+	db "swiper-app/internal/db"
+	"swiper-app/pkg/models"
 )
 
 func LogIn(user *models.User) (*models.User, error) {

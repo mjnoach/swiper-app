@@ -2,7 +2,7 @@ package db
 
 import (
 	"database/sql"
-	"dating-app/pkg/utils"
+	"swiper-app/pkg/utils"
 	"fmt"
 	"log"
 	"os"

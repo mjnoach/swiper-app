@@ -1,21 +1,21 @@
-name: dating-app
+name: swiper-app
 
 services:
   db:
-    container_name: dating-app-db
-    image: dating-app-db
+    container_name: swiper-app-db
+    image: swiper-app-db
     build: ./db
     ports:
       - "3306:3306"
     env_file: ./db/.env
 
   api:
-    container_name: dating-app-api
-    image: dating-app-api
+    container_name: swiper-app-api
+    image: swiper-app-api
     build: ./api
     ports:
       - "8080:8080"
-    env_file: ./api/.env.production
+    env_file: ./api/.env.docker
     depends_on:
       - db
     environment:

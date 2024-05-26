@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"dating-app/internal/api"
-	_ "dating-app/internal/db"
+	"swiper-app/internal/api"
+	_ "swiper-app/internal/db"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
