@@ -1,0 +1,22 @@
+name: dating-app
+
+services:
+  db:
+    container_name: dating-app-db
+    image: dating-app-db
+    build: ./db
+    ports:
+      - "3306:3306"
+    env_file: ./db/.env
+
+  api:
+    container_name: dating-app-api
+    image: dating-app-api
+    build: ./api
+    ports:
+      - "8080:8080"
+    env_file: ./api/.env.production
+    depends_on:
+      - db
+    environment:
+      DB-HOST: db

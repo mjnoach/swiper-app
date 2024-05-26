@@ -7,10 +7,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "db": "docker build -t dating_app/db ./backend/db; docker run -d -p 3306:3306 --name dating_app_db --env-file ./backend/db/.env dating_app/db;",
-    "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM; cd ../..",
-    "backend": "docker rm -f dating_app_db; yarn db; sleep 3 && yarn api;",
-    "frontend": "cd ./frontend; yarn; yarn web; cd .."
+    "client": "cd ./client; yarn; yarn web",
+    "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM",
+    "db": "docker build -t dating-app--db ./backend/db; docker run -d -p 3306:3306 --name dating-app--db --env-file ./backend/db/.env dating-app--db",
+    "docker:backend": "cd ./backend; docker compose up"
   },
   "devDependencies": {
     "nodemon": "^3.1.1"
