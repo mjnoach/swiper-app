@@ -32,9 +32,6 @@ export default {
       favicon: './assets/images/favicon.png',
       bundler: 'metro',
     },
-    extra: {
-      API_URL: process.env.API_URL,
-    },
     plugins: ['expo-asset', 'expo-font'],
   },
 }
