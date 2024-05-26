@@ -1,7 +1,8 @@
 import { H1 } from '@expo/html-elements'
 import { Button } from '@mantine/core'
 import { StatusBar } from 'expo-status-bar'
-import { Platform, ScrollView, StyleSheet } from 'react-native'
+import { Platform, ScrollView } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { Card } from '../components/Card'
 import { CreateUserForm } from '../components/Form/CreateUserForm'
 import { LoginForm } from '../components/Form/LoginForm'
@@ -45,7 +46,7 @@ export default function UserScreen() {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',

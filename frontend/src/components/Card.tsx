@@ -1,6 +1,7 @@
 import { H1, H2 } from '@expo/html-elements'
 import React from 'react'
-import { ImageBackground, StyleSheet, View } from 'react-native'
+import { ImageBackground, View } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { User } from '../types'
 import { getProfileImageUrl } from '../utils'
 
@@ -34,7 +35,7 @@ export function Card({ profile }: CardProps) {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   imageWrapper: {
     flex: 1,
     paddingTop: '1rem',

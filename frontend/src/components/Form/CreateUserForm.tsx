@@ -9,7 +9,7 @@ import {
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../../api'
 import { AuthResponse, User } from '../../types'
 import { useSession } from '../SessionContext'
@@ -67,7 +67,7 @@ export function CreateUserForm() {
           label="Email"
           placeholder="your@email.com"
           autoComplete="email"
-          textcontenttype="email"
+          type="email"
           {...form.getInputProps('email')}
         />
         <PasswordInput
@@ -96,7 +96,7 @@ export function CreateUserForm() {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   input: {
     marginBottom: '1rem',
   },

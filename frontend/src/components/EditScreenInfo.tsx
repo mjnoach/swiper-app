@@ -1,6 +1,7 @@
 import * as WebBrowser from 'expo-web-browser'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
+import EStyleSheet from 'react-native-extended-stylesheet'
 import Colors from '../constants/Colors'
 import { MonoText } from './StyledText'
 import { Text, View } from './Themed'
@@ -53,7 +54,7 @@ function handleHelpPress() {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,

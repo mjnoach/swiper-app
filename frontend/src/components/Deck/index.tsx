@@ -1,6 +1,6 @@
 import { animated, to as interpolate } from '@react-spring/web'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../../api'
 import { User } from '../../types'
 import { Card } from '../Card'
@@ -79,7 +79,7 @@ async function swipeRight(item: { id: number }) {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   deck: {
     position: 'absolute',
     top: 0,

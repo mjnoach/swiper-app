@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../api'
 import { Deck } from '../components/Deck/index'
 import { useSession } from '../components/SessionContext'
@@ -38,7 +39,7 @@ export default function FeedScreen({ navigation }) {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightblue',

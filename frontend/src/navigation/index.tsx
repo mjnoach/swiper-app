@@ -12,8 +12,9 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
-import { ColorSchemeName, StyleSheet } from 'react-native'
+import { ColorSchemeName } from 'react-native'
 
+import EStyleSheet from 'react-native-extended-stylesheet'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import FeedScreen from '../screens/FeedScreen'
@@ -110,7 +111,7 @@ function BottomTabNavigator() {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   tabBar: {
     paddingTop: '1rem',
     paddingBottom: '1rem',

@@ -2,7 +2,8 @@ import { H1, H2 } from '@expo/html-elements'
 import { animated, useSpring } from '@react-spring/web'
 import { useDrag } from '@use-gesture/react'
 import { useState } from 'react'
-import { Image, Pressable, StyleSheet, Text } from 'react-native'
+import { Image, Pressable, Text } from 'react-native'
+import EStyleSheet from 'react-native-extended-stylesheet'
 import { getProfileImageUrl } from '../utils'
 import { View } from './Themed'
 
@@ -114,7 +115,7 @@ export function Card({ id, title }: CardProps) {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   content: {
     flex: 1,
     borderRadius: 20,

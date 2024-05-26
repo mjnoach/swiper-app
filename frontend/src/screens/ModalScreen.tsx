@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform } from 'react-native'
 
+import EStyleSheet from 'react-native-extended-stylesheet'
 import EditScreenInfo from '../components/EditScreenInfo'
 import { Text, View } from '../components/Themed'
 
@@ -21,7 +22,7 @@ export default function ModalScreen() {
   )
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
