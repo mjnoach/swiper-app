@@ -14,21 +14,21 @@ export function Card({ profile }: CardProps) {
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
         <ImageBackground
-          imageStyle={{ resizeMode: 'contain' }}
+          resizeMode="contain"
           source={{ uri: getProfileImageUrl(profile.id) }}
           style={styles.image}
         />
       </View>
       <View style={styles.details}>
-        <H1 selectable={false}>{profile.name}</H1>
+        <H1 style={{ userSelect: 'none' }}>{profile.name}</H1>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}
         >
-          <H2 selectable={false}>{profile.age}</H2>
-          <H2 selectable={false}>id: {profile.id}</H2>
+          <H2 style={{ userSelect: 'none' }}>{profile.age}</H2>
+          <H2 style={{ userSelect: 'none' }}>id: {profile.id}</H2>
         </View>
       </View>
     </View>

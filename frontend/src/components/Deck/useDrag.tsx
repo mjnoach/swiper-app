@@ -1,6 +1,6 @@
+import { useSprings } from '@react-spring/web'
 import { useDrag as useDragGesture } from '@use-gesture/react'
 import { useState } from 'react'
-import { useSprings } from 'react-spring'
 import { useSession } from '../SessionContext'
 
 type UseDragProps = {

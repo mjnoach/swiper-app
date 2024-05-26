@@ -59,9 +59,7 @@ function Button(props: ButtonProps) {
         onHoverIn={handleHoverIn}
         onHoverOut={handleHoverOut}
       >
-        <Text style={styles.buttonText} selectable={false}>
-          {props.title}
-        </Text>
+        <Text style={styles.buttonText}>{props.title}</Text>
       </Pressable>
     </animated.div>
   )
@@ -104,8 +102,8 @@ export function Card({ id, title }: CardProps) {
           />
           <View style={styles.details}>
             <View style={styles.text}>
-              <H1 selectable={false}>{title}</H1>
-              <H2 selectable={false}>id: {id}</H2>
+              <H1 style={{ userSelect: 'none' }}>{title}</H1>
+              <H2 style={{ userSelect: 'none' }}>id: {id}</H2>
             </View>
             <ActionBar />
           </View>
@@ -149,6 +147,7 @@ const styles = EStyleSheet.create({
   },
   buttonText: {
     fontSize: 72,
+    userSelect: 'none',
   },
   actionBar: {
     backgroundColor: 'rgba(218, 218, 218, 0.5)',

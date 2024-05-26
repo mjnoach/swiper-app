@@ -8,6 +8,13 @@ import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import Navigation from './navigation'
 
+// TODO
+// – fix hot reloading
+// – use API_URL from env
+// – give some indication when there are no more cards in the stack to swipe
+//   only unmatched profiles reappear after the stack has been swiped out completely
+// – set login screen as default if session doesn't exist
+
 EStyleSheet.build({})
 
 export default function App() {
