@@ -1,8 +1,8 @@
 export default {
   expo: {
     entryPoint: './src/index.js',
-    name: 'dating-app',
-    slug: 'dating-app',
+    name: 'swiper-app',
+    slug: 'swiper-app',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
@@ -19,14 +19,14 @@ export default {
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.mjnoach.dating-app',
+      bundleIdentifier: 'com.mjnoach.swiper-app',
     },
     android: {
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
-      package: 'com.mjnoach.dating_app',
+      package: 'com.mjnoach.swiper-app',
     },
     web: {
       favicon: './assets/images/favicon.png',

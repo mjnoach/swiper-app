@@ -1,15 +1,15 @@
 {
-  "name": "dating-app",
+  "name": "swiper-app",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/mjnoach/dating-app.git",
+  "repository": "https://github.com/mjnoach/swiper-app.git",
   "author": "mjnoach <a.siennkiewicz@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
     "frontend": "cd ./frontend; yarn; yarn web",
     "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM",
-    "db": "docker build -t dating-app--db ./backend/db; docker run -d -p 3306:3306 --name dating-app--db --env-file ./backend/db/.env dating-app--db",
+    "db": "docker build -t swiper-app--db ./backend/db; docker run -d -p 3306:3306 --name swiper-app--db --env-file ./backend/db/.env swiper-app--db",
     "docker:backend": "cd ./backend; docker compose up"
   },
   "devDependencies": {

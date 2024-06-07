@@ -1,9 +1,9 @@
 package api
 
 import (
-	"dating-app/internal/service"
-	"dating-app/pkg/models"
-	"dating-app/pkg/utils"
+	"swiper-app/internal/service"
+	"swiper-app/pkg/models"
+	"swiper-app/pkg/utils"
 	"net/http"
 	"strconv"
 

@@ -36,8 +36,8 @@ yarn db
 
 // build & run the db container
 
-docker build -t dating_app/db ./backend/db;
-docker run -d -p 3306:3306 --name dating_app_db --env-file ./backend/db/.env dating_app/db;
+docker build -t swiper-app/db ./backend/db;
+docker run -d -p 3306:3306 --name swiper-app_db --env-file ./backend/db/.env swiper-app/db;
 ```
 
 ## `api`
@@ -53,8 +53,8 @@ yarn api
 
 // build & run the api container
 
-docker build -t dating_app/api ./backend/api;
-docker run -d -p 8080:8080 --name dating_app_api --env-file ./backend/api/.env --env DB-HOST=172.17.0.1 dating_app/api;
+docker build -t swiper-app/api ./backend/api;
+docker run -d -p 8080:8080 --name swiper-app_api --env-file ./backend/api/.env --env DB-HOST=172.17.0.1 swiper-app/api;
 
 
 // OR run directly
@@ -70,8 +70,8 @@ cd backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM; cd ../..
 // build
 
 cd backend/api;
-go build -o bin/dating_app cmd/main.go
-bin/dating_app .; 
+go build -o bin/swiper-app cmd/main.go
+bin/swiper-app .; 
 cd ../..;
 ```
 

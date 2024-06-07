@@ -1,8 +1,8 @@
 package service
 
 import (
-	"dating-app/internal/repo"
-	"dating-app/pkg/models"
+	"swiper-app/internal/repo"
+	"swiper-app/pkg/models"
 
 	"github.com/brianvoe/gofakeit/v6"
 )
