@@ -47,7 +47,7 @@ export function LoginForm() {
       .catch((e) => {
         console.log(
           '🚀 ~ file: CreateUserForm.tsx ~ line 65 ~ handleFormSubmit ~ e',
-          e?.response?.data,
+          e,
         )
         setErrorMessage(e?.response?.data)
       })
