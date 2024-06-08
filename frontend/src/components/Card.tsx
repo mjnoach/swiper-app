@@ -2,8 +2,8 @@ import { H1, H2 } from '@expo/html-elements'
 import React from 'react'
 import { ImageBackground, View } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import { getProfileImageUrl } from '../lib/utils'
 import { User } from '../types'
-import { getProfileImageUrl } from '../utils'
 
 type CardProps = {
   profile: User

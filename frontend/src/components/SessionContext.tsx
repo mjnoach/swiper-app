@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import storage from '../storage'
+import storage from '../lib/storage'
 import { User } from '../types'
 
 type SessionContext = {

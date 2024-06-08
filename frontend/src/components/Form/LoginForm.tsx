@@ -10,7 +10,7 @@ import {
 import { useForm } from '@mantine/form'
 import { useContext, useState } from 'react'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { api } from '../../api'
+import { api } from '../../lib/api'
 import { AuthResponse } from '../../types'
 import { SessionContext } from '../SessionContext'
 

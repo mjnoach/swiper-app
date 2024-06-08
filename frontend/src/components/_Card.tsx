@@ -4,7 +4,7 @@ import { useDrag } from '@use-gesture/react'
 import { useState } from 'react'
 import { Image, Pressable, Text } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { getProfileImageUrl } from '../utils'
+import { getProfileImageUrl } from '../lib/utils'
 import { View } from './Themed'
 
 function PullRelease(props) {

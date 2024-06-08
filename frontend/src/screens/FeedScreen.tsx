@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
 import { View } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { api } from '../api'
 import { Deck } from '../components/Deck/index'
 import { SessionContext } from '../components/SessionContext'
+import { api } from '../lib/api'
 import { User } from '../types'
 
 const STACK_SIZE = 10

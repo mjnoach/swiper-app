@@ -1,11 +1,11 @@
 import { animated, to as interpolate } from '@react-spring/web'
 import React, { useContext } from 'react'
 import EStyleSheet from 'react-native-extended-stylesheet'
-import { api } from '../../api'
 import { User } from '../../types'
 import { Card } from '../Card'
 import { SessionContext } from '../SessionContext'
 import { trans, useDrag } from './useDrag'
+import { api } from '../../lib/api'
 
 type DeckProps = {
   items: User[]
