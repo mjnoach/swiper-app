@@ -11,7 +11,6 @@ import { useForm } from '@mantine/form'
 import React, { useContext, useState } from 'react'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../../lib/api'
-import { AuthResponse } from '../../types'
 import { SessionContext } from '../SessionContext'
 
 export function CreateUserForm() {
@@ -30,14 +29,9 @@ export function CreateUserForm() {
   const [errorMessage, setErrorMessage] = useState('')
 
   async function handleFormSubmit({ email, password }) {
-    const response = await api
-      .post<AuthResponse>(`/auth/register`, {
-        email,
-        password,
-      })
-      .catch((e) => {
-        setErrorMessage(e.response.data)
-      })
+    const response = await api.register(email, password).catch((e) => {
+      setErrorMessage(e.response.data)
+    })
     if (!response) return
     setSession(response.data.user, response.data.jwt)
   }

@@ -1,11 +1,11 @@
 import { animated, to as interpolate } from '@react-spring/web'
 import React, { useContext } from 'react'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import { api } from '../../lib/api'
 import { User } from '../../types'
 import { Card } from '../Card'
 import { SessionContext } from '../SessionContext'
 import { trans, useDrag } from './useDrag'
-import { api } from '../../lib/api'
 
 type DeckProps = {
   items: User[]
@@ -21,21 +21,19 @@ export function Deck(props: DeckProps) {
   })
 
   async function swipeLeft(item: { id: number }) {
-    const swipe = {
-      user: user?.id,
+    api.swipe({
+      user: user!.id,
       profile: item.id,
       preference: 'no',
-    }
-    await api.post<User[]>(`/swipe`, swipe)
+    })
   }
 
   async function swipeRight(item: { id: number }) {
-    const swipe = {
-      user: user?.id,
+    const response = await api.swipe({
+      user: user!.id,
       profile: item.id,
       preference: 'yes',
-    }
-    const response = await api.post<User[]>(`/swipe`, swipe)
+    })
     const hasMatch = response.data
     if (hasMatch) {
       alert("It's a match!")

@@ -14,7 +14,7 @@ export default function FeedScreen() {
 
   useEffect(() => {
     if (!user) return setProfiles([])
-    api.get<User[]>(`/profiles?id=${user?.id}`).then(({ data: profiles }) => {
+    api.fetchProfiles(user).then(({ data: profiles }) => {
       setProfiles(profiles.slice(0, STACK_SIZE))
     })
   }, [user])
