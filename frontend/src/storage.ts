@@ -26,6 +26,7 @@ export default {
       // value = value !== null ? JSON.parse(value) : null
       return value as T
     } catch (e) {
+      console.log('🚀 ~ file: storage.ts ~ line 29 ~ get: ~ e', e)
       return value as string
     }
   },

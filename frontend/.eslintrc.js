@@ -1,17 +1,12 @@
+// https://docs.expo.dev/guides/using-eslint/
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
+  extends: ['expo', 'plugin:@typescript-eslint/recommended', 'prettier'],
   plugins: ['@typescript-eslint', 'prettier'],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
+  parser: '@typescript-eslint/parser',
   rules: {
-    'no-undef': 'off',
-    'no-empty-pattern': 'off',
     'prettier/prettier': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    '@typescript-eslint/no-redeclare': 'off',
   },
 }
