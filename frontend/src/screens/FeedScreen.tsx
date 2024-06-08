@@ -1,36 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View } from 'react-native'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../api'
 import { Deck } from '../components/Deck/index'
-import { useSession } from '../components/SessionContext'
+import { SessionContext } from '../components/SessionContext'
 import { User } from '../types'
 
-async function fetchProfiles(user: User | null) {
-  if (!user) return []
-  const response = await api.get<User[]>(`profiles?id=${user?.id}`)
-  const profiles = response.data ?? []
-  return profiles
-}
+const STACK_SIZE = 10
 
-export default function FeedScreen({ navigation }) {
+export default function FeedScreen() {
   const [profiles, setProfiles] = React.useState<User[]>([])
-  const { getCurrentUser } = useSession()
-
-  function refreshFeed() {
-    getCurrentUser()
-      .then((user) => fetchProfiles(user))
-      .then((profiles) => setProfiles(profiles.slice(0, 10)))
-  }
+  const { user } = useContext(SessionContext)
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', refreshFeed)
-    return unsubscribe
-  }, [navigation])
-
-  useEffect(() => {
-    refreshFeed()
-  }, [navigation])
+    if (!user) return setProfiles([])
+    api.get<User[]>(`/profiles?id=${user?.id}`).then(({ data: profiles }) => {
+      setProfiles(profiles.slice(0, STACK_SIZE))
+    })
+  }, [user])
 
   return (
     <View style={styles.container}>

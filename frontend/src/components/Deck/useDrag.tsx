@@ -1,7 +1,7 @@
 import { useSprings } from '@react-spring/web'
 import { useDrag as useDragGesture } from '@use-gesture/react'
-import { useState } from 'react'
-import { useSession } from '../SessionContext'
+import { useContext, useState } from 'react'
+import { SessionContext } from '../SessionContext'
 
 type UseDragProps = {
   deckItems: any[]
@@ -15,7 +15,7 @@ export function useDrag(props: UseDragProps) {
     ...to(i),
     from: from(i),
   }))
-  const { user } = useSession()
+  const { user } = useContext(SessionContext)
 
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
   const bindDrag = useDragGesture(

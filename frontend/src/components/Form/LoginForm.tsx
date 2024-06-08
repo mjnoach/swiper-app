@@ -8,23 +8,11 @@ import {
   TextInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../../api'
-import { AuthResponse, User } from '../../types'
-import { useSession } from '../SessionContext'
-
-async function logIn({ email, password }: Partial<User>) {
-  const response = await api.post<AuthResponse>(`/auth/login`, {
-    email,
-    password,
-  })
-  console.log(
-    '🚀 ~ file: LoginForm.tsx ~ line 24 ~ logIn ~ response?.data',
-    response?.data,
-  )
-  return response?.data
-}
+import { AuthResponse } from '../../types'
+import { SessionContext } from '../SessionContext'
 
 export function LoginForm() {
   const form = useForm({
@@ -38,19 +26,20 @@ export function LoginForm() {
       password: (value) => (value.length > 0 ? null : 'Invalid password'),
     },
   })
-  const { setSession } = useSession()
+  const { setSession } = useContext(SessionContext)
   const [errorMessage, setErrorMessage] = useState('')
 
   async function handleFormSubmit({ email, password }) {
-    logIn({ email, password })
-      .then(({ user, jwt }) => user && setSession(user, jwt))
-      .catch((e) => {
-        console.log(
-          '🚀 ~ file: CreateUserForm.tsx ~ line 65 ~ handleFormSubmit ~ e',
-          e,
-        )
-        setErrorMessage(e?.response?.data)
+    const response = await api
+      .post<AuthResponse>(`/auth/login`, {
+        email,
+        password,
       })
+      .catch((e) => {
+        setErrorMessage(e.response.data)
+      })
+    if (!response) return
+    setSession(response.data.user, response.data.jwt)
   }
 
   return (

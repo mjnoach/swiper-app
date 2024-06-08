@@ -1,10 +1,10 @@
 import { animated, to as interpolate } from '@react-spring/web'
-import React from 'react'
+import React, { useContext } from 'react'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { api } from '../../api'
 import { User } from '../../types'
 import { Card } from '../Card'
-import { getCurrentUser } from '../SessionContext'
+import { SessionContext } from '../SessionContext'
 import { trans, useDrag } from './useDrag'
 
 type DeckProps = {
@@ -12,11 +12,35 @@ type DeckProps = {
 }
 
 export function Deck(props: DeckProps) {
+  const { user } = useContext(SessionContext)
+
   const { springs, bindDrag } = useDrag({
     deckItems: props.items,
     swipeLeft,
     swipeRight,
   })
+
+  async function swipeLeft(item: { id: number }) {
+    const swipe = {
+      user: user?.id,
+      profile: item.id,
+      preference: 'no',
+    }
+    await api.post<User[]>(`/swipe`, swipe)
+  }
+
+  async function swipeRight(item: { id: number }) {
+    const swipe = {
+      user: user?.id,
+      profile: item.id,
+      preference: 'yes',
+    }
+    const response = await api.post<User[]>(`/swipe`, swipe)
+    const hasMatch = response.data
+    if (hasMatch) {
+      alert("It's a match!")
+    }
+  }
 
   return (
     <>
@@ -39,44 +63,6 @@ export function Deck(props: DeckProps) {
       ))}
     </>
   )
-}
-
-async function swipeLeft(item: { id: number }) {
-  const user = await getCurrentUser()
-  const swipe = {
-    user: user?.id,
-    profile: item.id,
-    preference: 'no',
-  }
-  console.log('🚀 ~ file: index.tsx ~ line 89 ~ swipeLeft ~ swipe', swipe)
-  try {
-    await api.post<User[]>(`/swipe`, swipe)
-  } catch (error) {
-    console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
-  }
-}
-
-async function swipeRight(item: { id: number }) {
-  const user = await getCurrentUser()
-  const swipe = {
-    user: user?.id,
-    profile: item.id,
-    preference: 'yes',
-  }
-  console.log('🚀 ~ file: index.tsx ~ line 104 ~ swipeRight ~ swipe', swipe)
-  try {
-    const response = await api.post<User[]>(`/swipe`, swipe)
-    const hasMatch = response.data
-    console.log(
-      '🚀 ~ file: index.tsx ~ line 109 ~ swipeRight ~ hasMatch',
-      hasMatch,
-    )
-    if (hasMatch) {
-      alert('You have a match!')
-    }
-  } catch (error) {
-    console.log('🚀 ~ file: useDrag.tsx ~ line 24 ~ swipeLeft ~ error', error)
-  }
 }
 
 const styles = EStyleSheet.create({

@@ -6,12 +6,13 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import { Card } from '../components/Card'
 import { CreateUserForm } from '../components/Form/CreateUserForm'
 import { LoginForm } from '../components/Form/LoginForm'
-import { useSession } from '../components/SessionContext'
 
 import { View } from '../components/Themed'
+import { useContext } from 'react'
+import { SessionContext } from '../components/SessionContext'
 
 export default function UserScreen() {
-  const { user, clearSession } = useSession()
+  const { user, clearSession } = useContext(SessionContext)
 
   function handleSignOutClick() {
     clearSession()

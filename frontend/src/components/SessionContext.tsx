@@ -1,34 +1,31 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import storage from '../storage'
 import { User } from '../types'
 
 type SessionContext = {
   user: User | null
-  getCurrentUser: () => Promise<User | null>
   setSession(user: User, jwt: string): Promise<void>
   clearSession(): Promise<void>
 }
 
-export const SessionContext = createContext<SessionContext>(
-  {} as SessionContext,
-)
-
-export const useSession = () => useContext(SessionContext)
-
-export async function getCurrentUser() {
-  return await storage.get<User>('user')
-}
+export const SessionContext = createContext<SessionContext>({
+  user: null,
+  setSession: async () => {},
+  clearSession: async () => {},
+})
 
 export function SessionProvider(props) {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    getCurrentUser().then((user) => setUser(user))
+    storage.get('user').then((user) => {
+      if (user) setUser(JSON.parse(user) as User)
+    })
   }, [])
 
   async function setSession(user: User, jwt: string) {
     setUser(user)
-    storage.set('user', user)
+    storage.set('user', JSON.stringify(user))
     storage.set('jwt', jwt)
   }
 
@@ -39,9 +36,7 @@ export function SessionProvider(props) {
   }
 
   return (
-    <SessionContext.Provider
-      value={{ user, getCurrentUser, setSession, clearSession }}
-    >
+    <SessionContext.Provider value={{ user, setSession, clearSession }}>
       {props.children}
     </SessionContext.Provider>
   )
