@@ -21,6 +21,13 @@ export default function TabLayout() {
         // tabBarActiveTintColor: Colors["light"].tint,
         tabBarActiveTintColor: "black",
         headerTitle: (props) => <Logo />,
+        tabBarStyle: {
+          height: 70,
+        },
+        tabBarLabelStyle: {
+          fontSize: 16,
+          marginBottom: 10,
+        },
       }}
     >
       <Tabs.Screen
