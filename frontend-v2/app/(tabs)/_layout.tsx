@@ -1,18 +1,25 @@
-import { Tabs } from "expo-router"
-import React from "react"
+import { Tabs, router, useRootNavigationState } from "expo-router"
+import React, { useContext, useEffect } from "react"
 
 import { Logo } from "@/components/Logo"
 import { TabBarIcon } from "@/components/navigation/TabBarIcon"
-import { Colors } from "@/constants/Colors"
-import { useColorScheme } from "@/hooks/useColorScheme"
+import { SessionContext } from "@/providers/session"
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
+  const { user } = useContext(SessionContext)
+  const rootNavigationState = useRootNavigationState()
+  const navigatorReady = rootNavigationState?.key != null
+
+  useEffect(() => {
+    if (!navigatorReady) return
+    if (!user) router.replace("/")
+  }, [navigatorReady, user])
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        // tabBarActiveTintColor: Colors["light"].tint,
+        tabBarActiveTintColor: "black",
         headerTitle: (props) => <Logo />,
       }}
     >
