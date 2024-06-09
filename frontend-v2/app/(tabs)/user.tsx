@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native"
 
-export default function Index() {
+export default function UserScreen() {
   return (
     <View style={styles.container}>
       <Text>User</Text>
