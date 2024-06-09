@@ -1,3 +1,4 @@
+import { Providers } from "@/providers"
 import { Stack } from "expo-router"
 import { Image, StyleSheet, Text, View } from "react-native"
 
@@ -15,15 +16,17 @@ function Logo() {
 
 export default function RootLayout() {
   return (
-    <Stack
-      screenOptions={{
-        // headerStyle: { backgroundColor: "#eb5f5d" },
-        headerTitle: (props) => <Logo />,
-      }}
-    >
-      <Stack.Screen name="index" options={{}} />
-      <Stack.Screen name="user" />
-    </Stack>
+    <Providers>
+      <Stack
+        screenOptions={{
+          // headerStyle: { backgroundColor: "#eb5f5d" },
+          headerTitle: (props) => <Logo />,
+        }}
+      >
+        <Stack.Screen name="index" options={{}} />
+        <Stack.Screen name="user" />
+      </Stack>
+    </Providers>
   )
 }
 
