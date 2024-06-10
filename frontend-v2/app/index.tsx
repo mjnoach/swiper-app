@@ -11,7 +11,8 @@ export default function Index() {
   console.log("🚀 ~ Providers ~ user:", user)
 
   useEffect(() => {
-    if (user) router.replace("/user")
+    if (user) router.replace("/explore")
+    // if (user) router.replace("/user")
   }, [user])
 
   return (

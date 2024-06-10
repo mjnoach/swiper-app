@@ -5,6 +5,18 @@ import { SessionContext } from "@/providers/session"
 import { User } from "@/types"
 import React, { useContext } from "react"
 import { StyleSheet, View } from "react-native"
+import "react-native-gesture-handler"
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler"
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated"
 
 type DeckProps = {
   profiles: User[]
@@ -33,22 +45,59 @@ export function Deck(props: DeckProps) {
     }
   }
 
+  const pressed = useSharedValue<boolean>(false)
+
+  const offset = useSharedValue<number>(0)
+
+  const pan = Gesture.Pan()
+    .onBegin(() => {
+      pressed.value = true
+    })
+    .onChange((event) => {
+      offset.value = event.translationX
+    })
+    .onFinalize(() => {
+      offset.value = withSpring(0)
+      pressed.value = false
+    })
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: offset.value },
+      { scale: withTiming(pressed.value ? 1.2 : 1) },
+    ],
+    // @ts-ignore
+    cursor: "grab",
+  }))
+
   return (
-    <View style={styles.container}>
-      {props.profiles.map((profile, i) => (
-        <View
-          key={i}
-          style={{
-            ...styles.card,
-            transform: [
-              { rotate: `${randomInt(0, 1) ? "-" : ""}${randomInt(0, 5)}deg` },
-            ],
-          }}
-        >
-          <ProfileCard profile={profile} />
-        </View>
-      ))}
-    </View>
+    <GestureHandlerRootView style={styles.container}>
+      <View style={styles.container}>
+        {props.profiles.map((profile, i) => (
+          <View
+            key={i}
+            style={{
+              ...styles.card,
+              transform: [
+                {
+                  rotate: `${randomInt(0, 1) ? "-" : ""}${randomInt(0, 5)}deg`,
+                },
+              ],
+            }}
+          >
+            {i === props.profiles.length - 1 ? (
+              <GestureDetector gesture={pan}>
+                <Animated.View style={animatedStyles}>
+                  <ProfileCard profile={props.profiles[0]} />
+                </Animated.View>
+              </GestureDetector>
+            ) : (
+              <ProfileCard profile={profile} />
+            )}
+          </View>
+        ))}
+      </View>
+    </GestureHandlerRootView>
   )
 }
 
