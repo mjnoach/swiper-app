@@ -47,28 +47,44 @@ export function Deck(props: DeckProps) {
 
   const pressed = useSharedValue<boolean>(false)
 
-  const offset = useSharedValue<number>(0)
+  const offsetX = useSharedValue<number>(0)
+  const offsetY = useSharedValue<number>(0)
+
+  const SWIPE_BOUNDARY = 250
+  const EXIT_POSITION = 700
 
   const pan = Gesture.Pan()
     .onBegin(() => {
       pressed.value = true
     })
     .onChange((event) => {
-      offset.value = event.translationX
+      offsetX.value = event.translationX
+      offsetY.value = event.translationY
     })
     .onFinalize(() => {
-      offset.value = withSpring(0)
       pressed.value = false
+      offsetY.value = withSpring(0)
+
+      if (offsetX.value < -SWIPE_BOUNDARY)
+        return (offsetX.value = withSpring(-EXIT_POSITION))
+
+      if (offsetX.value > SWIPE_BOUNDARY)
+        return (offsetX.value = withSpring(EXIT_POSITION))
+
+      offsetX.value = withSpring(0)
     })
 
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [
-      { translateX: offset.value },
+      { translateX: offsetX.value },
+      { translateY: offsetY.value },
       { scale: withTiming(pressed.value ? 1.2 : 1) },
     ],
     // @ts-ignore
     cursor: "grab",
   }))
+
+  const rotation = () => `${randomInt(0, 1) ? "-" : ""}${randomInt(0, 6)}deg`
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -80,7 +96,7 @@ export function Deck(props: DeckProps) {
               ...styles.card,
               transform: [
                 {
-                  rotate: `${randomInt(0, 1) ? "-" : ""}${randomInt(0, 5)}deg`,
+                  rotate: rotation(),
                 },
               ],
             }}
