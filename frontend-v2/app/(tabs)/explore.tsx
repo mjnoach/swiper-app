@@ -15,7 +15,10 @@ export default function ExploreTab() {
       const { data: profiles } = res
       if (profiles === null) {
         // TODO
-        // ran out of profiles
+        // show previously disliked profiles
+        // or display status message:
+        //  - no new profiles to show
+        //  - all new profiles have been viewed
         return
       }
       setProfiles(profiles)

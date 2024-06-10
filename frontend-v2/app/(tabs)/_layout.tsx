@@ -1,20 +1,10 @@
-import { Tabs, router, useRootNavigationState } from "expo-router"
-import React, { useContext, useEffect } from "react"
+import { Tabs } from "expo-router"
+import React from "react"
 
 import { Logo } from "@/components/Logo"
 import { TabBarIcon } from "@/components/navigation/TabBarIcon"
-import { SessionContext } from "@/providers/session"
 
 export default function TabLayout() {
-  const { user } = useContext(SessionContext)
-  const rootNavigationState = useRootNavigationState()
-  const navigatorReady = rootNavigationState?.key != null
-
-  useEffect(() => {
-    if (!navigatorReady) return
-    if (!user) router.replace("/")
-  }, [navigatorReady, user])
-
   return (
     <Tabs
       screenOptions={{
@@ -24,9 +14,11 @@ export default function TabLayout() {
         tabBarStyle: {
           height: 70,
         },
+        tabBarItemStyle: {
+          bottom: 5,
+        },
         tabBarLabelStyle: {
           fontSize: 16,
-          marginBottom: 10,
         },
       }}
     >
