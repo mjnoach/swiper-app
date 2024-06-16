@@ -1,20 +1,5 @@
-import { StyleSheet, Text, View } from "react-native"
-
-// TODO
-// if no user session, display create account / login component
+import { Redirect } from "expo-router"
 
 export default function Index() {
-  return (
-    <View style={styles.container}>
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
-  )
+  return <Redirect href="/user" />
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-})

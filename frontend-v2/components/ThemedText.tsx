@@ -1,4 +1,4 @@
-import { Text, type TextProps, StyleSheet } from "react-native"
+import { StyleSheet, Text, type TextProps } from "react-native"
 
 import { useThemeColor } from "@/hooks/useThemeColor"
 
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
   link: {
     lineHeight: 30,
     fontSize: 16,
-    color: "#0a7ea4",
+    color: "rgb(52,120,246)",
   },
 })

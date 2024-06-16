@@ -1,27 +1,21 @@
 import { Button } from "@/components/Button"
 import { ProfileCard } from "@/components/ProfileCard"
+import { ThemedView } from "@/components/ThemedView"
+import { withSession } from "@/components/withSession"
 import { SessionContext } from "@/providers/session"
 import { useContext } from "react"
-import { GestureResponderEvent, StyleSheet, View } from "react-native"
+import { StyleSheet } from "react-native"
 
-export default function UserTab() {
-  const { user } = useContext(SessionContext)
-
-  if (!user) return null
+export default withSession(function UserTab() {
+  const { user, clearSession } = useContext(SessionContext)
 
   return (
-    <View style={styles.container}>
-      <ProfileCard profile={user} />
-      <Button
-        title="Sign Out"
-        onPress={function (event: GestureResponderEvent): void {
-          // TODO
-          console.log("🚀 ~ UserTab ~ event:", event)
-        }}
-      />
-    </View>
+    <ThemedView style={styles.container}>
+      <ProfileCard profile={user!} />
+      <Button title="Sign Out" onPress={() => clearSession()} />
+    </ThemedView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

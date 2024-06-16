@@ -1,16 +1,14 @@
 import { Tabs } from "expo-router"
 import React from "react"
 
-import { Logo } from "@/components/Logo"
 import { TabBarIcon } from "@/components/navigation/TabBarIcon"
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        // tabBarActiveTintColor: Colors["light"].tint,
+        headerShown: false,
         tabBarActiveTintColor: "black",
-        headerTitle: (props) => <Logo />,
         tabBarStyle: {
           height: 70,
         },

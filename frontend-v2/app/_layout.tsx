@@ -1,4 +1,4 @@
-import { Logo } from "@/components/Logo"
+import { Header } from "@/components/Header"
 import { Providers } from "@/providers"
 import { Stack } from "expo-router"
 
@@ -7,11 +7,11 @@ export default function RootLayout() {
     <Providers>
       <Stack
         screenOptions={{
-          headerTitle: (props) => <Logo />,
+          header: (props) => <Header />,
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{}} />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="+not-found" />
       </Stack>
     </Providers>
   )
