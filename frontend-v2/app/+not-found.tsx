@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   text: {
-    fontSize: 22,
     lineHeight: 55,
   },
 })

@@ -15,26 +15,15 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         source={{ uri: getProfileImageUrl(profile.id) }}
       />
       <View style={styles.info}>
-        <Text
-          style={{
-            ...styles.text,
-            ...styles.textTop,
-          }}
-        >
-          {profile.name}
-        </Text>
+        <Text style={[styles.text, styles.textTop]}>{profile.name}</Text>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ ...styles.text, ...styles.textBottom }}>
-            {profile.age}
-          </Text>
-          <Text style={{ ...styles.text, ...styles.textBottom }}>
-            id: {profile.id}
-          </Text>
+          <Text style={[styles.text, styles.textBottom]}>{profile.age}</Text>
+          <Text style={[styles.text, styles.textBottom]}>id: {profile.id}</Text>
         </View>
       </View>
     </View>

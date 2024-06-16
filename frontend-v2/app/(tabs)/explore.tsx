@@ -1,13 +1,12 @@
 import { Deck } from "@/components/Deck"
 import { ThemedView } from "@/components/ThemedView"
-import { withSession } from "@/components/withSession"
 import { api } from "@/lib/api"
 import { SessionContext } from "@/providers/session"
 import { User } from "@/types"
 import React, { useContext, useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
 
-export default withSession(function ExploreTab() {
+export default function ExploreTab() {
   const [profiles, setProfiles] = useState<User[] | null>(null)
   const { user } = useContext(SessionContext)
 
@@ -31,7 +30,7 @@ export default withSession(function ExploreTab() {
       {profiles && <Deck profiles={profiles} />}
     </ThemedView>
   )
-})
+}
 
 const styles = StyleSheet.create({
   container: {

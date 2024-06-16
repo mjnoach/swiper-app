@@ -9,10 +9,6 @@ export function withSession(WrappedComponent: React.ComponentType) {
   return function WithSession(props: any) {
     const { user } = useContext(SessionContext)
 
-    // TODO
-    // protect authenticated routes on layout level
-    // to prevent static content flash
-
     if (!user)
       return (
         <ThemedView style={styles.container}>

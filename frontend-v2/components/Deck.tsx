@@ -26,7 +26,6 @@ export function Deck(props: DeckProps) {
   const [activeCardIndex, setActiveCardIndex] = useState(
     props.profiles.length - 1,
   )
-  console.log("🚀 ~ activeCardIndex:", activeCardIndex)
 
   // TODO
   // if activeCardIndex === -1
@@ -154,11 +153,13 @@ function AnimatedProfileCard(props: AnimatedProfileCardProps) {
 
   return (
     <View
-      style={{
-        ...styles.card,
-        transform: [{ rotate }],
-        display: props.isSwipedOut ? "none" : "flex",
-      }}
+      style={[
+        styles.card,
+        {
+          transform: [{ rotate }],
+          display: props.isSwipedOut ? "none" : "flex",
+        },
+      ]}
     >
       <GestureDetector gesture={gesture}>
         <Animated.View style={animatedStyles}>

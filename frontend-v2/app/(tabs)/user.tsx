@@ -1,12 +1,11 @@
 import { Button } from "@/components/Button"
 import { ProfileCard } from "@/components/ProfileCard"
 import { ThemedView } from "@/components/ThemedView"
-import { withSession } from "@/components/withSession"
 import { SessionContext } from "@/providers/session"
 import { useContext } from "react"
 import { StyleSheet } from "react-native"
 
-export default withSession(function UserTab() {
+export default function UserTab() {
   const { user, clearSession } = useContext(SessionContext)
 
   return (
@@ -15,7 +14,7 @@ export default withSession(function UserTab() {
       <Button title="Sign Out" onPress={() => clearSession()} />
     </ThemedView>
   )
-})
+}
 
 const styles = StyleSheet.create({
   container: {
