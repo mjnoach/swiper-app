@@ -10,16 +10,17 @@ import { useContext, useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 import Animated, { FadeIn } from "react-native-reanimated"
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
   const [email, setEmail] = useState("test@mail.com")
-  const [password, setPassword] = useState("aUbu5D8ZPyVSS6W")
+  const [password, setPassword] = useState("")
   const [passwordHidden, setPasswordHidden] = useState(true)
+  const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const { setSession } = useContext(SessionContext)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     setErrorMessage(null)
-  }, [email, password])
+  }, [email, password, passwordConfirmation])
 
   function validateInputs() {
     const emailRegex = /^\S+@\S+$/
@@ -27,8 +28,12 @@ export default function SignInScreen() {
       setErrorMessage("Invalid email address")
       return false
     }
-    if (!password) {
+    if (!password || !passwordConfirmation) {
       setErrorMessage("Password is required")
+      return false
+    }
+    if (password !== passwordConfirmation) {
+      setErrorMessage("Passwords must match")
       return false
     }
     return true
@@ -36,7 +41,7 @@ export default function SignInScreen() {
 
   async function handleSubmit() {
     if (!validateInputs()) return
-    const response = await api.login(email, password).catch((e) => {
+    const response = await api.register(email, password).catch((e) => {
       setErrorMessage(e.response.data)
       console.log("handleSubmit ~ e.response.data:", e.response.data)
     })
@@ -47,7 +52,7 @@ export default function SignInScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Log in</ThemedText>
+      <ThemedText type="title">Register</ThemedText>
       {errorMessage && (
         <Animated.View entering={FadeIn.duration(100)}>
           <Text style={styles.errorText}>{errorMessage}</Text>
@@ -68,8 +73,8 @@ export default function SignInScreen() {
         <ThemedText style={styles.label}>Password</ThemedText>
         <View>
           <TextInput
-            id="current-password"
-            autoComplete="current-password"
+            id="new-password"
+            autoComplete="new-password"
             style={styles.input}
             value={password}
             onChangeText={(text) => setPassword(text.trim())}
@@ -92,16 +97,29 @@ export default function SignInScreen() {
           </LinearGradient>
         </View>
       </View>
+      <View>
+        <ThemedText style={styles.label}>Password confirmation</ThemedText>
+        <View>
+          <TextInput
+            id="new-password-confirmation"
+            autoComplete="new-password"
+            style={styles.input}
+            value={passwordConfirmation}
+            onChangeText={(text) => setPasswordConfirmation(text.trim())}
+            secureTextEntry={passwordHidden}
+          />
+        </View>
+      </View>
       <Button
         style={styles.button}
         onPress={() => {
           handleSubmit()
         }}
-        title={"Sign in"}
+        title={"Sign up"}
       />
-      <Link href="/sign-up">
+      <Link href="/sign-in">
         <ThemedText style={styles.text} type="link">
-          Create a new account
+          Log in to an existing account
         </ThemedText>
       </Link>
     </ThemedView>

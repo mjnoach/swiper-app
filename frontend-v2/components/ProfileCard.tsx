@@ -7,6 +7,9 @@ type ProfileCardProps = {
   profile: User
 }
 
+// TODO
+// adjust layout & styles for small mobile devices
+
 export function ProfileCard({ profile }: ProfileCardProps) {
   return (
     <View style={styles.container}>

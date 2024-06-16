@@ -10,6 +10,9 @@ export default function ExploreTab() {
   const [profiles, setProfiles] = useState<User[] | null>(null)
   const { user } = useContext(SessionContext)
 
+  // TODO
+  // limit numbers of profiles being fetched
+
   useEffect(() => {
     api.fetchProfiles(user!).then((res) => {
       const { data: profiles } = res
