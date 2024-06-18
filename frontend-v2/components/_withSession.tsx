@@ -1,13 +1,12 @@
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
-import { SessionContext } from "@/providers/session"
+import { useSession } from "@/lib/session"
 import { Link } from "expo-router"
-import { useContext } from "react"
 import { StyleSheet } from "react-native"
 
 export function withSession(WrappedComponent: React.ComponentType) {
   return function WithSession(props: any) {
-    const { user } = useContext(SessionContext)
+    const { user } = useSession()
 
     if (!user)
       return (

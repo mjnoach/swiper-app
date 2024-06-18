@@ -7,13 +7,8 @@ export type User = {
   age: number
 }
 
-export type AuthResponse = {
-  jwt: string
-  user: User
-}
-
 export type Swipe = {
-  user: number
-  profile: number
+  swipeFrom: number
+  swipedUser: number
   preference: "yes" | "no"
 }

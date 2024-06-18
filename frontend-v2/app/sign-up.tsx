@@ -2,21 +2,26 @@ import { Button } from "@/components/Button"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { api } from "@/lib/api"
-import { SessionContext } from "@/providers/session"
+import { useSession } from "@/providers/session"
 import { Ionicons } from "@expo/vector-icons"
 import { LinearGradient } from "expo-linear-gradient"
-import { Link, router } from "expo-router"
-import { useContext, useEffect, useState } from "react"
+import { Link, router, usePathname } from "expo-router"
+import { useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 import Animated, { FadeIn } from "react-native-reanimated"
 
 export default function SignUpScreen() {
+  const { setSession } = useSession()
   const [email, setEmail] = useState("test@mail.com")
   const [password, setPassword] = useState("")
   const [passwordHidden, setPasswordHidden] = useState(true)
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
-  const { setSession } = useContext(SessionContext)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setErrorMessage(null)
+  }, [pathname])
 
   useEffect(() => {
     setErrorMessage(null)
@@ -41,12 +46,12 @@ export default function SignUpScreen() {
 
   async function handleSubmit() {
     if (!validateInputs()) return
-    const response = await api.register(email, password).catch((e) => {
-      setErrorMessage(e.response.data)
-      console.log("handleSubmit ~ e.response.data:", e.response.data)
-    })
-    if (!response) return
-    setSession(response.data.user, response.data.jwt)
+    const res = await api
+      .register(email, password)
+      .catch(({ message }: Error) => setErrorMessage(message))
+    if (!res) return
+    const { data } = res
+    await setSession(data.user, data.jwt)
     router.replace("/user")
   }
 
@@ -86,7 +91,10 @@ export default function SignUpScreen() {
             locations={[0, 0.3]}
             style={styles.iconContainer}
           >
-            <Pressable onPress={() => setPasswordHidden(!passwordHidden)}>
+            <Pressable
+              tabIndex={-1}
+              onPress={() => setPasswordHidden(!passwordHidden)}
+            >
               <Ionicons
                 size={28}
                 style={styles.icon}

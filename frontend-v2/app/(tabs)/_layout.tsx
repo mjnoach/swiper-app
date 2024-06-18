@@ -1,11 +1,11 @@
 import { Redirect, Tabs } from "expo-router"
-import React, { useContext } from "react"
+import React from "react"
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon"
-import { SessionContext } from "@/providers/session"
+import { useSession } from "@/providers/session"
 
 export default function TabLayout() {
-  const { user } = useContext(SessionContext)
+  const { user } = useSession()
 
   if (!user) {
     return <Redirect href="/sign-in" />

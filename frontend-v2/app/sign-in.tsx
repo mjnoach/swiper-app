@@ -2,20 +2,25 @@ import { Button } from "@/components/Button"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { api } from "@/lib/api"
-import { SessionContext } from "@/providers/session"
+import { useSession } from "@/providers/session"
 import { Ionicons } from "@expo/vector-icons"
 import { LinearGradient } from "expo-linear-gradient"
-import { Link, router } from "expo-router"
-import { useContext, useEffect, useState } from "react"
+import { Link, router, usePathname } from "expo-router"
+import React, { useEffect, useState } from "react"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 import Animated, { FadeIn } from "react-native-reanimated"
 
 export default function SignInScreen() {
+  const { setSession } = useSession()
   const [email, setEmail] = useState("test@mail.com")
-  const [password, setPassword] = useState("aUbu5D8ZPyVSS6W")
+  const [password, setPassword] = useState("")
   const [passwordHidden, setPasswordHidden] = useState(true)
-  const { setSession } = useContext(SessionContext)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setErrorMessage(null)
+  }, [pathname])
 
   useEffect(() => {
     setErrorMessage(null)
@@ -36,12 +41,12 @@ export default function SignInScreen() {
 
   async function handleSubmit() {
     if (!validateInputs()) return
-    const response = await api.login(email, password).catch((e) => {
-      setErrorMessage(e.response.data)
-      console.log("handleSubmit ~ e.response.data:", e.response.data)
-    })
-    if (!response) return
-    setSession(response.data.user, response.data.jwt)
+    const res = await api
+      .login(email, password)
+      .catch(({ message }: Error) => setErrorMessage(message))
+    if (!res) return
+    const { data } = res
+    await setSession(data.user, data.jwt)
     router.replace("/user")
   }
 

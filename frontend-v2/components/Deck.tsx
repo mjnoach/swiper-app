@@ -1,9 +1,10 @@
 import { ProfileCard } from "@/components/ProfileCard"
+import { api } from "@/lib/api"
 import { getRandomInt } from "@/lib/utils"
 import { style } from "@/lib/utils/style"
-import { SessionContext } from "@/providers/session"
-import { User } from "@/types"
-import React, { useContext, useEffect, useMemo, useState } from "react"
+import { useSession } from "@/providers/session"
+import { Swipe, User } from "@/types"
+import React, { useEffect, useMemo, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import "react-native-gesture-handler"
 import {
@@ -20,42 +21,68 @@ import Animated, {
 
 type DeckProps = {
   profiles: User[]
+  onDeckEnd: () => Promise<void>
 }
 
 export function Deck(props: DeckProps) {
-  const { user } = useContext(SessionContext)
+  const { user } = useSession()
   const [activeCardIndex, setActiveCardIndex] = useState(
     props.profiles.length - 1,
   )
+  const [revertSwipe, setRevertSwipe] = useState(false)
+  // const [isMatch, setMatch] = useState(false)
 
-  // TODO
-  // if activeCardIndex === -1
-  // fetch more profiles
-  // or display relevant status message
+  // const MATCH_ANIMATION_DURATION = 2200
+
+  // useEffect(() => {
+  //   console.log("🚀 ~ Deck ~ activeCardIndex:", activeCardIndex)
+  //   if (isMatch)
+  //     setTimeout(() => {
+  //       setMatch(false)
+  //     }, MATCH_ANIMATION_DURATION)
+  // }, [isMatch])
+
+  useEffect(() => {
+    if (revertSwipe) setRevertSwipe(false)
+  }, [revertSwipe])
+
+  useEffect(() => {
+    if (activeCardIndex === -1) props.onDeckEnd()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeCardIndex])
 
   async function swipeLeft(profile: User) {
-    console.log("🚀 ~ swipeLeft")
-    // api.swipe({
-    //   user: user!.id,
-    //   profile: profile.id,
-    //   preference: "no",
-    // })
+    const options: Swipe = {
+      swipeFrom: user!.id,
+      swipedUser: profile.id,
+      preference: "no",
+    }
+    console.log("Swipe", options)
+    const res = await api.swipe(options).catch((e) => setRevertSwipe(true))
+    if (!res) return
     setActiveCardIndex((prevIndex) => prevIndex - 1)
   }
 
   async function swipeRight(profile: User) {
-    console.log("🚀 ~ swipeRight")
-    // const response = await api.swipe({
-    //   user: user!.id,
-    //   profile: profile.id,
-    //   preference: "yes",
-    // })
-    // const hasMatch = response.data
-    // if (hasMatch) {
-    //   alert("It's a match!")
-    // }
+    const options: Swipe = {
+      swipeFrom: user!.id,
+      swipedUser: profile.id,
+      preference: "yes",
+    }
+    console.log("Swipe", options)
+    const res = await api.swipe(options).catch((e) => setRevertSwipe(true))
+    if (!res) return
+    const hasMatch = res.data
+    console.log("Match", hasMatch)
+    if (hasMatch) handleMatch()
     setActiveCardIndex((prevIndex) => prevIndex - 1)
   }
+
+  function handleMatch() {
+    alert("It's a match!")
+  }
+
+  if (revertSwipe) return null
 
   return (
     <GestureHandlerRootView style={styles.deck}>

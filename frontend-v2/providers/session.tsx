@@ -1,6 +1,6 @@
 import { storage } from "@/lib/storage"
 import { User } from "@/types"
-import { createContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 type Session = {
   user: User | null
@@ -31,8 +31,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   async function clearSession() {
     setUser(null)
-    storage.remove("user")
-    storage.remove("jwt")
+    clearSessionData()
   }
 
   return (
@@ -41,3 +40,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
     </SessionContext.Provider>
   )
 }
+
+export function clearSessionData() {
+  storage.remove("user")
+  storage.remove("jwt")
+}
+
+export const useSession = () => useContext(SessionContext)
