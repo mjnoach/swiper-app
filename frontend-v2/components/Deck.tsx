@@ -1,5 +1,6 @@
 import { ProfileCard } from "@/components/ProfileCard"
 import { getRandomInt } from "@/lib/utils"
+import { style } from "@/lib/utils/style"
 import { SessionContext } from "@/providers/session"
 import { User } from "@/types"
 import React, { useContext, useEffect, useMemo, useState } from "react"
@@ -57,37 +58,22 @@ export function Deck(props: DeckProps) {
   }
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <View style={styles.container}>
-        {props.profiles.map((profile, i) => (
-          <AnimatedProfileCard
-            key={i}
-            profile={profile}
-            isActive={i === activeCardIndex}
-            isSwipedOut={i > activeCardIndex}
-            swipeLeft={() => swipeLeft(profile)}
-            swipeRight={() => swipeRight(profile)}
-          />
-        ))}
-      </View>
+    <GestureHandlerRootView style={styles.deck}>
+      {props.profiles.map((profile, i) => (
+        <AnimatedCard
+          key={i}
+          profile={profile}
+          isActive={i === activeCardIndex}
+          isSwipedOut={i > activeCardIndex}
+          swipeLeft={() => swipeLeft(profile)}
+          swipeRight={() => swipeRight(profile)}
+        />
+      ))}
     </GestureHandlerRootView>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  card: {
-    position: "absolute",
-    aspectRatio: "3/4",
-    height: "70%",
-  },
-})
-
-type AnimatedProfileCardProps = {
+type AnimatedCardProps = {
   profile: User
   isActive: boolean
   isSwipedOut: boolean
@@ -95,7 +81,7 @@ type AnimatedProfileCardProps = {
   swipeRight: () => Promise<void>
 }
 
-function AnimatedProfileCard(props: AnimatedProfileCardProps) {
+function AnimatedCard(props: AnimatedCardProps) {
   const pressed = useSharedValue<boolean>(false)
   const offsetX = useSharedValue<number>(0)
   const offsetY = useSharedValue<number>(0)
@@ -143,7 +129,16 @@ function AnimatedProfileCard(props: AnimatedProfileCardProps) {
     transform: [
       { translateX: offsetX.value },
       { translateY: offsetY.value },
-      { scale: withTiming(pressed.value ? 1.2 : 1) },
+      {
+        scale: withTiming(
+          pressed.value
+            ? style.windowWidth<number>({
+                small: 1.1,
+                default: 1.2,
+              })
+            : 1,
+        ),
+      },
     ],
     // @ts-ignore
     cursor: props.isActive ? "grab" : "auto",
@@ -162,13 +157,24 @@ function AnimatedProfileCard(props: AnimatedProfileCardProps) {
       ]}
     >
       <GestureDetector gesture={gesture}>
-        <Animated.View style={animatedStyles}>
+        <Animated.View style={[animatedStyles]}>
           <ProfileCard profile={props.profile} />
         </Animated.View>
       </GestureDetector>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  deck: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  card: {
+    position: "absolute",
+  },
+})
 
 const SWIPE_BOUNDARY = 250
 const EXIT_POSITION = Dimensions.get("window").width

@@ -1,4 +1,4 @@
-import storage from "@/lib/storage"
+import { storage } from "@/lib/storage"
 import { AuthResponse, Swipe, User } from "@/types"
 import axios from "axios"
 

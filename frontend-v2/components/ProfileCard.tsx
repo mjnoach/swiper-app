@@ -1,7 +1,8 @@
 import { getProfileImageUrl } from "@/lib/utils"
+import { style } from "@/lib/utils/style"
 import { User } from "@/types"
 import React from "react"
-import { Image, StyleSheet, Text, View } from "react-native"
+import { DimensionValue, Image, StyleSheet, Text, View } from "react-native"
 
 type ProfileCardProps = {
   profile: User
@@ -18,15 +19,21 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         source={{ uri: getProfileImageUrl(profile.id) }}
       />
       <View style={styles.info}>
-        <Text style={[styles.text, styles.textTop]}>{profile.name}</Text>
+        <Text numberOfLines={1} style={[styles.text, styles.textTop]}>
+          {profile.name}
+        </Text>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
           }}
         >
-          <Text style={[styles.text, styles.textBottom]}>{profile.age}</Text>
-          <Text style={[styles.text, styles.textBottom]}>id: {profile.id}</Text>
+          <Text numberOfLines={1} style={[styles.text, styles.textBottom]}>
+            {profile.age}
+          </Text>
+          <Text numberOfLines={1} style={[styles.text, styles.textBottom]}>
+            id: {profile.id}
+          </Text>
         </View>
       </View>
     </View>
@@ -35,7 +42,6 @@ export function ProfileCard({ profile }: ProfileCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     aspectRatio: "3/4",
     borderRadius: 20,
     backgroundColor: "white",
@@ -43,9 +49,14 @@ const styles = StyleSheet.create({
     shadowRadius: 25,
     shadowOpacity: 0.2,
     userSelect: "none",
+    width: style.windowWidth<DimensionValue>({
+      small: 300,
+      default: 400,
+    }),
   },
   image: {
     height: "75%",
+    marginTop: 10,
   },
   info: {
     flexGrow: 1,
@@ -54,12 +65,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   text: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
     paddingHorizontal: 30,
   },
   textTop: {
-    fontSize: 40,
+    fontSize: style.windowWidth<number>({
+      small: 26,
+      default: 32,
+    }),
     paddingTop: 10,
   },
   textBottom: {
