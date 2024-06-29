@@ -35,7 +35,7 @@ func main() {
 
 	// Routes
 	router.GET("/", func(ctx echo.Context) error {
-		return ctx.String(http.StatusOK, "Hello World!")
+		return ctx.String(http.StatusOK, "Hello Swiper App!")
 	})
 	router.GET("/user/create", api.CreateRandomUser)
 	router.POST("/auth/register", api.Register)

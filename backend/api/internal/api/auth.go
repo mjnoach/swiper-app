@@ -1,11 +1,11 @@
 package api
 
 import (
+	"net/http"
+	"os"
 	"swiper-app/internal/service"
 	"swiper-app/pkg/models"
 	"swiper-app/pkg/utils"
-	"net/http"
-	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -37,7 +37,7 @@ func Register(ctx echo.Context) error {
 	ctx.Bind(user)
 	user, err := service.Register(user)
 	if err != nil {
-		utils.CheckErr(err, "")
+		utils.LogErr(err, "")
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	if user == nil {
@@ -45,7 +45,7 @@ func Register(ctx echo.Context) error {
 	}
 	jwt, err := getToken(user)
 	if err != nil {
-		utils.CheckErr(err, "")
+		utils.LogErr(err, "")
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return ctx.JSON(http.StatusCreated, echo.Map{
@@ -59,15 +59,15 @@ func LogIn(ctx echo.Context) error {
 	ctx.Bind(user)
 	user, err := service.LogIn(user)
 	if err != nil {
-		utils.CheckErr(err, "")
+		utils.LogErr(err, "")
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	if user == nil {
-		return ctx.JSON(http.StatusUnauthorized, "User not found")
+		return ctx.JSON(http.StatusNotFound, "Invalid email or password")
 	}
 	jwt, err := getToken(user)
 	if err != nil {
-		utils.CheckErr(err, "")
+		utils.LogErr(err, "")
 		return ctx.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return ctx.JSON(http.StatusOK, echo.Map{

@@ -8,12 +8,12 @@ import (
 
 func LogIn(user *models.User) (*models.User, error) {
 	row := db.Client.QueryRow(`
-		SELECT * FROM profile 
+		SELECT * FROM Users 
 		WHERE email = ?
 		AND password = ?
 	`, user.Email, user.Password)
 	var u models.User
-	err := row.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age)
+	err := row.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age, &u.CreatedAt)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}

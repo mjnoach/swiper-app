@@ -11,7 +11,7 @@ type UserRepository models.UserInterface
 
 func checkUserExists(u *models.User) (int, error) {
 	row := db.Client.QueryRow(`
-		SELECT id FROM profile WHERE email = ?
+		SELECT id FROM Users WHERE email = ?
 	`, u.Email)
 	var user models.User
 	err := row.Scan(&user.ID)
@@ -34,11 +34,11 @@ func CreateUser(u *models.User) (int, error) {
 	}
 	utils.Print("Creating user:", u)
 	res, err := db.Client.Exec(`
-		INSERT INTO profile (email, password, name, gender, age) 
+		INSERT INTO Users (email, password, name, gender, age) 
 		VALUES (?,?,?,?,?)
 	`, u.Email, u.Password, u.Name, u.Gender, u.Age)
-	utils.CheckErr(err, "")
 	if err != nil {
+		utils.LogErr(err, "")
 		return -1, err
 	}
 	id, err := res.LastInsertId()
@@ -51,10 +51,10 @@ func CreateUser(u *models.User) (int, error) {
 
 func GetUser(id int) (*models.User, error) {
 	row := db.Client.QueryRow(`
-		SELECT * FROM profile WHERE id = ?
+		SELECT * FROM Users WHERE id = ?
 	`, id)
 	var u models.User
-	err := row.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age)
+	err := row.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age, &u.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func GetUser(id int) (*models.User, error) {
 
 func GetAllUser() ([]*models.User, error) {
 	rows, err := db.Client.Query(`
-		SELECT * FROM profile
+		SELECT * FROM Users
 	`)
 	if err != nil {
 		return nil, err
@@ -87,9 +87,13 @@ func GetAllUser() ([]*models.User, error) {
 
 func GetProfiles(id int) ([]*models.User, error) {
 	rows, err := db.Client.Query(`
-		SELECT * FROM profile 
-		WHERE profile.id != ? AND
-		profile.id NOT IN (SELECT profile FROM swipe WHERE user = ?)
+		SELECT * FROM Users 
+		WHERE Users.id != ? AND
+		Users.id NOT IN (
+			SELECT swipedUser FROM Swipes 
+			WHERE swipeFrom = ?
+			AND preference = 'yes'
+		)
 	`, id, id)
 	if err != nil {
 		return nil, err
@@ -98,7 +102,7 @@ func GetProfiles(id int) ([]*models.User, error) {
 	var profiles []*models.User
 	for rows.Next() {
 		var u models.User
-		err = rows.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age)
+		err = rows.Scan(&u.ID, &u.Email, &u.Password, &u.Name, &u.Gender, &u.Age, &u.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -113,9 +117,9 @@ func GetProfiles(id int) ([]*models.User, error) {
 
 func Swipe(s *models.Swipe) (int, error) {
 	res, err := db.Client.Exec(`
-		INSERT INTO swipe (user, profile, preference) 
+		INSERT INTO Swipes (swipeFrom, swipedUser, preference) 
 		VALUES (?,?,?)
-	`, s.User, s.Profile, s.Preference)
+	`, s.SwipeFrom, s.SwipedUser, s.Preference)
 	if err != nil {
 		return -1, err
 	}
@@ -129,10 +133,10 @@ func Swipe(s *models.Swipe) (int, error) {
 
 func GetMatchStatus(s *models.Swipe) (bool, error) {
 	row := db.Client.QueryRow(`
-		SELECT preference FROM swipe 
-		WHERE user = ? AND 
-		profile = ?
-	`, s.Profile, s.User)
+		SELECT preference FROM Swipes 
+		WHERE swipeFrom = ? AND 
+		swipedUser = ?
+	`, s.SwipedUser, s.SwipeFrom)
 	var correspondingSwipe models.Swipe
 	err := row.Scan(&correspondingSwipe.Preference)
 	if err == sql.ErrNoRows {

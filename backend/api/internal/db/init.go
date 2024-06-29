@@ -2,10 +2,10 @@ package db
 
 import (
 	"database/sql"
-	"swiper-app/pkg/utils"
 	"fmt"
 	"log"
 	"os"
+	"swiper-app/pkg/utils"
 
 	mysql "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -21,15 +21,15 @@ func init() {
 }
 
 func initDbConnection() {
-	var DBADDR = os.Getenv("DBADDR")
-	if len(DBADDR) == 0 {
-		DBADDR = fmt.Sprintf("%s:%s", os.Getenv("DB-HOST"), os.Getenv("DB-PORT"))
+	var ADDR = os.Getenv("DB-ADDR")
+	if len(ADDR) == 0 {
+		ADDR = fmt.Sprintf("%s:%s", os.Getenv("DB-HOST"), os.Getenv("DB-PORT"))
 	}
 	var config = mysql.Config{
 		User:                 os.Getenv("DB-USER"),
 		Passwd:               os.Getenv("DB-PASS"),
 		Net:                  "tcp",
-		Addr:                 DBADDR,
+		Addr:                 ADDR,
 		DBName:               os.Getenv("DB-NAME"),
 		AllowNativePasswords: true,
 		ParseTime:            true,
@@ -37,9 +37,9 @@ func initDbConnection() {
 
 	var err error
 	Client, err = sql.Open("mysql", config.FormatDSN())
-	utils.CheckPanic(err, "error opening database")
+	utils.LogPanic(err, "error opening database")
 	err = Client.Ping()
-	utils.CheckPanic(err, "error pinging database")
+	utils.LogPanic(err, "error pinging database")
 	log.Printf("Database connection initialized!")
 }
 
@@ -55,6 +55,6 @@ func performSchemaMigration() {
 	default:
 		n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
 	}
-	utils.CheckPanic(err, "")
+	utils.LogPanic(err, "")
 	log.Printf("Applied %d migrations!", n)
 }
