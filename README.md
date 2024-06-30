@@ -3,27 +3,26 @@
 ![](/frontend/public/img-1.png) | ![](/frontend/public/img-2.png) | ![](/frontend/public/img-3.png)       
 -- | -- | --
 
-## `🚀 start`
 
 1. Set up local environment
 
-```bash
-cd backend/api; cp .env.example .env; cd ../..;
-cd backend/db; cp .env.example .env; cd ../..;
-cd frontend; cp .env.example .env; cd ..;
-```
+   ```bash
+   cp backend/api/.env.example backend/api/.env
+   cp backend/db/.env.example backend/db/.env
+   cp frontend/.env.example frontend/.env
+   ```
 
-2. Start up the backend
+2. Start the backend
 
-```bash
-yarn docker:backend
-# OR
-yarn db
-yarn api
-```
+   ```bash
+   yarn docker:backend
+   # OR
+   yarn docker:db
+   yarn api
+   ```
 
-3. Start up the frontend
+3. Start the frontend
 
-```bash
-yarn frontend
-```
+   ```bash
+   yarn frontend
+   ```

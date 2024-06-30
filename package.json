@@ -7,9 +7,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "frontend": "cd ./frontend; yarn; yarn web",
-    "api": "cd ./backend/api; nodemon --exec go run cmd/main.go --signal SIGTERM",
-    "db": "docker build -t swiper-app--db ./backend/db; docker run -d -p 3306:3306 --name swiper-app--db --env-file ./backend/db/.env swiper-app--db",
+    "frontend": "cd frontend; yarn; yarn web",
+    "api": "cd backend/api; go run cmd/main.go",
+    "docker:api": "docker build -t swiper-app--api ./backend/api; docker run -d -p 8080:8080 --name swiper-app--api --env-file ./backend/api/.env.docker swiper-app--api",
+    "docker:db": "docker build -t swiper-app--db ./backend/db; docker run -d -p 3306:3306 --name swiper-app--db --env-file ./backend/db/.env swiper-app--db",
     "docker:backend": "cd ./backend; docker compose up"
   },
   "devDependencies": {
