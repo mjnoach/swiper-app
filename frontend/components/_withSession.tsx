@@ -1,6 +1,6 @@
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
-import { useSession } from "@/lib/session"
+import { useSession } from "@/providers/session"
 import { Link } from "expo-router"
 import { StyleSheet } from "react-native"
 

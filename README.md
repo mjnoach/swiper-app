@@ -1,6 +1,6 @@
 # Swiper App
 
-![](/assets/img-1.png) | ![](/assets/img-2.png) | ![](/assets/img-3.png)       
+![](/frontend/public/img-1.png) | ![](/frontend/public/img-2.png) | ![](/frontend/public/img-3.png)       
 -- | -- | --
 
 ## `🚀 start`
