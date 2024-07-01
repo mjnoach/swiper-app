@@ -32,7 +32,7 @@ func CreateUser(u *models.User) (int, error) {
 	if err != nil {
 		return -1, err
 	}
-	utils.Print("Creating user:", u)
+	utils.Log("Creating user:", u.Email)
 	res, err := db.Client.Exec(`
 		INSERT INTO Users (email, password, name, gender, age) 
 		VALUES (?,?,?,?,?)

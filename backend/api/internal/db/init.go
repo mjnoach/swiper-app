@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -10,17 +11,37 @@ import (
 	mysql "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	migrate "github.com/rubenv/sql-migrate"
+
+	pgx "github.com/jackc/pgx/v5"
 )
 
+// TODO
+// sql or pg
 var Client *sql.DB
 
 func init() {
 	godotenv.Load()
-	initDbConnection()
-	performSchemaMigration()
+	var DB_TYPE = os.Getenv("DB-TYPE")
+	if DB_TYPE == "sql" {
+		initSqlConnection()
+		performSqlSchemaMigration()
+	}
+	if DB_TYPE == "pg" {
+		initPgConnection()
+		performPgSchemaMigration()
+	}
 }
 
-func initDbConnection() {
+func initPgConnection() {
+		conn, err := pgx.Connect(context.Background(), os.Getenv("DB-URL"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+}
+
+func initSqlConnection() {
 	var ADDR = os.Getenv("DB-ADDR")
 	if len(ADDR) == 0 {
 		ADDR = fmt.Sprintf("%s:%s", os.Getenv("DB-HOST"), os.Getenv("DB-PORT"))
@@ -43,18 +64,23 @@ func initDbConnection() {
 	log.Printf("Database connection initialized!")
 }
 
-func performSchemaMigration() {
+func performSqlSchemaMigration() {
 	migrations := &migrate.FileMigrationSource{
 		Dir: "internal/db/migrations",
 	}
 	var n int
 	var err error
 	switch os.Getenv("MIGRATE") {
-	case "down":
-		n, err = migrate.Exec(Client, "mysql", migrations, migrate.Down)
-	default:
-		n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
+		case "down":
+			n, err = migrate.Exec(Client, "mysql", migrations, migrate.Down)
+		default:
+			n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
 	}
 	utils.LogPanic(err, "")
 	log.Printf("Applied %d migrations!", n)
+}
+
+
+func performPgSchemaMigration() {
+	// TODO
 }
