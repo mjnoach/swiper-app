@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
+	"runtime"
 	"swiper-app/pkg/utils"
 
 	mysql "github.com/go-sql-driver/mysql"
@@ -21,15 +21,15 @@ var Client *sql.DB
 
 func init() {
 	godotenv.Load()
+	utils.Log("Go version:", runtime.Version())
 	var DB_TYPE = os.Getenv("DB-TYPE")
-	if DB_TYPE == "sql" {
-		initSqlConnection()
-		performSqlSchemaMigration()
-	}
 	if DB_TYPE == "pg" {
 		initPgConnection()
 		performPgSchemaMigration()
+		return
 	}
+	initSqlConnection()
+	performSqlSchemaMigration()
 }
 
 func initPgConnection() {
@@ -55,13 +55,13 @@ func initSqlConnection() {
 		AllowNativePasswords: true,
 		ParseTime:            true,
 	}
-
+	utils.Log("Connecting to SQL DB", ADDR)
 	var err error
 	Client, err = sql.Open("mysql", config.FormatDSN())
 	utils.LogPanic(err, "error opening database")
 	err = Client.Ping()
 	utils.LogPanic(err, "error pinging database")
-	log.Printf("Database connection initialized!")
+	utils.Log("DB connection initialized!", "")
 }
 
 func performSqlSchemaMigration() {
@@ -77,7 +77,7 @@ func performSqlSchemaMigration() {
 			n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
 	}
 	utils.LogPanic(err, "")
-	log.Printf("Applied %d migrations!", n)
+	utils.Log(fmt.Sprintf("Applied %d migrations!", n), "")
 }
 
 

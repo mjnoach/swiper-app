@@ -8,22 +8,22 @@ import (
 )
 
 func Log(message string, obj interface{}) {
-	log.Printf("\n\n\\🚀 %s \n%v\n\n", message, obj)
+	log.Printf("– %s %v", message, obj)
 }
 
 func LogErr(err error, message string) {
-	log.Printf("\n\n\\❗️ %s \n%v\n\n", message, err)
+	log.Printf("❗️ %s %v", message, err)
 }
 
 func LogFatal(err error, message string) {
 	if err != nil {
-		log.Fatalf("\n\n\\❗️ %s \n%v\n\n", message, err)
+		log.Fatalf("❗️ %s %v", message, err)
 	}
 }
 
 func LogPanic(err error, message string) {
 	if err != nil {
-		log.Panicf("\n\n\\❗️ %s \n%v\n\n", message, err)
+		log.Panicf("❗️ %s %v", message, err)
 	}
 }
 

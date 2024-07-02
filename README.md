@@ -4,7 +4,7 @@
 -- | -- | --
 
 
-1. Set up local environment
+1. Set up the environment
 
    ```bash
    cp backend/api/.env.example backend/api/.env
@@ -12,13 +12,14 @@
    cp frontend/.env.example frontend/.env
    ```
 
-2. Start the backend
+2. Start backend services
 
    ```bash
    yarn docker:backend
    # OR
+   docker network create swiper-app
    yarn docker:db
-   yarn api
+   yarn docker:api
    ```
 
 3. Start the frontend

@@ -1,6 +1,6 @@
 # Swiper App Database
 
-1. Set up local environment
+1. Set up the environment
 
    ```bash
    cp .env.example .env

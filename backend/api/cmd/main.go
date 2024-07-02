@@ -7,6 +7,7 @@ import (
 
 	"swiper-app/internal/api"
 	_ "swiper-app/internal/db"
+	"swiper-app/pkg/utils"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -17,6 +18,7 @@ var router = echo.New()
 
 func main() {
 	godotenv.Load()
+	utils.Log("Client URL:", os.Getenv("APP-URL"))
 
 	// Middleware
 	router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
