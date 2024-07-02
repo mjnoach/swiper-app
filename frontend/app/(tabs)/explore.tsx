@@ -27,7 +27,7 @@ export default function ExploreTab() {
     if (!res) return
     if (res.data === null) return setMessage("No more content to explore")
     let profiles = res.data
-    profiles = shuffle(profiles.slice(profiles.length - DECK_SIZE))
+    profiles = shuffle(profiles.slice(0, DECK_SIZE))
     console.log("Profiles:", profiles)
     setProfiles(profiles)
   }

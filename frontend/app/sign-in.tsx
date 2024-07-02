@@ -26,6 +26,7 @@ export default function SignInScreen() {
 
   useEffect(() => {
     setErrorMessage(null)
+    setLoading(false)
   }, [pathname])
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function SignInScreen() {
   }
 
   async function handleSubmit() {
-    if (!validateInputs()) return
+    if (!validateInputs()) return setLoading(false)
     const res = await api
       .login(email, password)
       .catch(({ message }: Error) => setErrorMessage(message))
@@ -162,5 +163,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 18,
     color: "red",
+    textAlign: "center",
   },
 })

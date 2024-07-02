@@ -27,6 +27,7 @@ export default function SignUpScreen() {
 
   useEffect(() => {
     setErrorMessage(null)
+    setLoading(false)
   }, [pathname])
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function SignUpScreen() {
   }
 
   async function handleSubmit() {
-    if (!validateInputs()) return
+    if (!validateInputs()) return setLoading(false)
     const res = await api
       .register(email, password)
       .catch(({ message }: Error) => setErrorMessage(message))
@@ -183,5 +184,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 18,
     color: "red",
+    textAlign: "center",
   },
 })
