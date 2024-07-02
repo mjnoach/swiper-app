@@ -18,6 +18,11 @@ export default function SignInScreen() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const pathname = usePathname()
   const [isLoading, setLoading] = useState(false)
+  const { user } = useSession()
+
+  useEffect(() => {
+    if (!!user) router.replace("/user")
+  }, [user])
 
   useEffect(() => {
     setErrorMessage(null)

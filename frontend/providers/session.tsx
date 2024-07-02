@@ -6,22 +6,30 @@ type Session = {
   user: User | null
   setSession(user: User, jwt: string): Promise<void>
   clearSession(): Promise<void>
+  getUser(): Promise<User | null>
+  isClient: boolean
 }
 
 export const SessionContext = createContext<Session>({
   user: null,
   setSession: async () => {},
   clearSession: async () => {},
+  getUser: async () => null,
+  isClient: false,
 })
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    storage.get("user").then((user) => {
-      if (user) setUser(JSON.parse(user) as User)
-    })
+    getUser().then(setUser)
   }, [])
+
+  async function getUser() {
+    const user = await storage.get("user")
+    if (user) return JSON.parse(user) as User
+    return null
+  }
 
   async function setSession(user: User, jwt: string) {
     setUser(user)
@@ -35,7 +43,15 @@ export function SessionProvider(props: React.PropsWithChildren) {
   }
 
   return (
-    <SessionContext.Provider value={{ user, setSession, clearSession }}>
+    <SessionContext.Provider
+      value={{
+        user,
+        setSession,
+        clearSession,
+        getUser,
+        isClient: typeof window !== "undefined",
+      }}
+    >
       {props.children}
     </SessionContext.Provider>
   )

@@ -5,9 +5,9 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon"
 import { useSession } from "@/providers/session"
 
 export default function TabLayout() {
-  const { user } = useSession()
+  const { user, isClient } = useSession()
 
-  if (!user) {
+  if (!isClient || !user) {
     return <Redirect href="/sign-in" />
   }
 
