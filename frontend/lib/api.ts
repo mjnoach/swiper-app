@@ -51,7 +51,7 @@ export const api = {
 
 function handeError(err: any) {
   console.log("Api Error:", err)
-  if (err.response?.data) throw new Error(err.response.data)
+  if (typeof err.response?.data === "string") throw new Error(err.response.data)
   if (err.code === "ERR_NETWORK") throw new Error("Network Error")
   if (err.code === "ERR_BAD_REQUEST") throw new Error("Bad Request")
   if (err.code === "ERR_BAD_RESPONSE") throw new Error("Server Error")
