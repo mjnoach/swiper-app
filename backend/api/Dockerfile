@@ -1,49 +1,50 @@
-FROM golang:1.22.3-alpine
+# FROM golang:1.22.3-alpine
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY go.mod go.sum ./
+# COPY go.mod go.sum ./
 
-RUN go mod download
+# RUN go mod download
 
-COPY . .
+# COPY . .
 
-EXPOSE 8080
+# EXPOSE 8080
 
-CMD [ "go", "run", "cmd/main.go" ]
+# CMD [ "go", "run", "cmd/main.go" ]
 
 
 # ---
 
 
-# # Use a specific version of the Go image
-# FROM golang:1.22.3-alpine AS builder
+# Use a specific version of the Go image
+FROM golang:1.22.3-alpine AS builder
 
-# # Set the working directory inside the container
-# WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /app
 
-# # Copy go.mod and go.sum to the working directory and download dependencies
-# COPY go.mod go.sum ./
+# Copy go.mod and go.sum to the working directory and download dependencies
+COPY go.mod go.sum ./
 
-# RUN go mod download
+RUN go mod download
 
-# # Copy the rest of the source code
-# COPY . .
+# Copy the rest of the source code
+COPY . .
 
-# # # Build the Go binary
-# RUN go build -o main cmd/main.go
+# # Build the Go binary
+RUN go build -o main cmd/main.go
 
-# # # Use a minimal base image for the final stage
-# FROM alpine:latest
+# # Use a minimal base image for the final stage
+FROM alpine:latest
 
-# # # Set the working directory for the final image
-# WORKDIR /root/
+# # Set the working directory for the final image
+WORKDIR /root/
 
-# # # Copy the binary from the builder stage
-# COPY --from=builder /app/main .
+# # Copy the binary from the builder stage
+COPY --from=builder /app/main .
+COPY --from=builder /app/internal/db/migrations/ ./internal/db/migrations/
 
-# # Expose the necessary port
-# EXPOSE 8080
+# Expose the necessary port
+EXPOSE 8080
 
-# # # Run the compiled binary
-# CMD ["./main"]
+# # Run the compiled binary
+CMD ["./main"]

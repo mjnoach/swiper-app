@@ -18,7 +18,7 @@ var router = echo.New()
 
 func main() {
 	godotenv.Load()
-	utils.Log("Client URL:", os.Getenv("APP-URL"))
+	utils.Log("Client URL:", os.Getenv("CLIENT-URL"))
 
 	// Middleware
 	router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -26,7 +26,7 @@ func main() {
 	}))
 	router.Use(middleware.Recover())
 	router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{os.Getenv("APP-URL")},
+		AllowOrigins: []string{os.Getenv("CLIENT-URL")},
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
 
