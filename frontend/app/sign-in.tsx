@@ -17,6 +17,7 @@ export default function SignInScreen() {
   const [passwordHidden, setPasswordHidden] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const pathname = usePathname()
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     setErrorMessage(null)
@@ -44,6 +45,7 @@ export default function SignInScreen() {
     const res = await api
       .login(email, password)
       .catch(({ message }: Error) => setErrorMessage(message))
+      .finally(() => setLoading(false))
     if (!res) return
     const { data } = res
     await setSession(data.user, data.jwt)
@@ -98,8 +100,10 @@ export default function SignInScreen() {
         </View>
       </View>
       <Button
-        style={styles.button}
+        style={[styles.button, { opacity: isLoading ? 0.5 : 1 }]}
         onPress={() => {
+          if (isLoading) return
+          setLoading(true)
           handleSubmit()
         }}
         title={"Sign in"}

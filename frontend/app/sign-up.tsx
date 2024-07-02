@@ -18,6 +18,7 @@ export default function SignUpScreen() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const pathname = usePathname()
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     setErrorMessage(null)
@@ -49,6 +50,7 @@ export default function SignUpScreen() {
     const res = await api
       .register(email, password)
       .catch(({ message }: Error) => setErrorMessage(message))
+      .finally(() => setLoading(false))
     if (!res) return
     const { data } = res
     await setSession(data.user, data.jwt)
@@ -119,8 +121,10 @@ export default function SignUpScreen() {
         </View>
       </View>
       <Button
-        style={styles.button}
+        style={[styles.button, { opacity: isLoading ? 0.5 : 1 }]}
         onPress={() => {
+          if (isLoading) return
+          setLoading(true)
           handleSubmit()
         }}
         title={"Sign up"}
