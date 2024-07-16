@@ -12,3 +12,8 @@ export type Swipe = {
   swipedUser: number
   preference: "yes" | "no"
 }
+
+export type SwipeProgress = {
+  swipeProgress: number
+  direction: "left" | "right" | ""
+}

@@ -3,9 +3,13 @@ import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { api } from "@/lib/api"
 import { useSession } from "@/providers/session"
-import { User } from "@/types"
+import { SwipeProgress, User } from "@/types"
 import React, { useEffect, useState } from "react"
 import { StyleSheet } from "react-native"
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated"
 
 const DECK_SIZE = 8
 
@@ -13,6 +17,8 @@ export default function ExploreTab() {
   const { user } = useSession()
   const [profiles, setProfiles] = useState<User[]>([])
   const [message, setMessage] = useState("")
+  const bgOpacity = useSharedValue<number>(0.0)
+  const swipeDirection = useSharedValue<SwipeProgress["direction"]>("")
 
   useEffect(() => {
     fetchProfiles()
@@ -32,10 +38,31 @@ export default function ExploreTab() {
     setProfiles(profiles)
   }
 
+  function handleSwipeProgress({ swipeProgress, direction }: SwipeProgress) {
+    swipeDirection.value = direction
+    bgOpacity.value = swipeProgress - 0.5
+  }
+
+  const animatedBackground = useAnimatedStyle(() => ({
+    backgroundColor: {
+      right: `rgba(0, 255, 0, ${bgOpacity.value})`,
+      left: `rgba(255, 0, 0, ${bgOpacity.value})`,
+      "": "transparent",
+    }[swipeDirection.value],
+    height: "100%",
+    width: "100%",
+  }))
+
   return (
     <ThemedView style={styles.container}>
       {!!profiles.length && (
-        <Deck profiles={profiles} onDeckEnd={fetchProfiles} />
+        <Animated.View style={[animatedBackground]}>
+          <Deck
+            profiles={profiles}
+            onDeckEnd={fetchProfiles}
+            handleSwipeProgress={handleSwipeProgress}
+          />
+        </Animated.View>
       )}
       {!!message && <ThemedText type="subtitle">{message}</ThemedText>}
     </ThemedView>

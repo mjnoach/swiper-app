@@ -3,7 +3,7 @@ import { api } from "@/lib/api"
 import { getRandomInt } from "@/lib/utils"
 import { style } from "@/lib/utils/style"
 import { useSession } from "@/providers/session"
-import { Swipe, User } from "@/types"
+import { Swipe, SwipeProgress, User } from "@/types"
 import React, { useEffect, useMemo, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import "react-native-gesture-handler"
@@ -22,6 +22,7 @@ import Animated, {
 type DeckProps = {
   profiles: User[]
   onDeckEnd: () => Promise<void>
+  handleSwipeProgress({ swipeProgress, direction }: SwipeProgress): void
 }
 
 export function Deck(props: DeckProps) {
@@ -94,6 +95,7 @@ export function Deck(props: DeckProps) {
           isSwipedOut={i > activeCardIndex}
           swipeLeft={() => swipeLeft(profile)}
           swipeRight={() => swipeRight(profile)}
+          handleSwipeProgress={props.handleSwipeProgress}
         />
       ))}
     </GestureHandlerRootView>
@@ -106,12 +108,31 @@ type AnimatedCardProps = {
   isSwipedOut: boolean
   swipeLeft: () => Promise<void>
   swipeRight: () => Promise<void>
+  handleSwipeProgress({ swipeProgress, direction }: SwipeProgress): void
 }
 
 function AnimatedCard(props: AnimatedCardProps) {
   const pressed = useSharedValue<boolean>(false)
   const offsetX = useSharedValue<number>(0)
   const offsetY = useSharedValue<number>(0)
+
+  offsetX.addListener(0, (offsetXValue) => {
+    if (isNotSwiped(offsetXValue)) {
+      props.handleSwipeProgress({
+        swipeProgress: Math.min(Math.abs(offsetXValue) / SWIPE_DISTANCE, 1),
+        direction: getSwipeDirection(offsetXValue),
+      })
+    }
+    if (isSwiped("left", offsetXValue) || isSwiped("right", offsetXValue)) {
+      const progress =
+        (Math.abs(offsetXValue) - SWIPE_DISTANCE) /
+        (EXIT_POSITION - SWIPE_DISTANCE)
+      props.handleSwipeProgress({
+        swipeProgress: 1 - progress,
+        direction: getSwipeDirection(offsetXValue),
+      })
+    }
+  })
 
   const gesture = Gesture.Pan()
     .enabled(false)
@@ -152,7 +173,7 @@ function AnimatedCard(props: AnimatedCardProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.isActive])
 
-  const animatedStyles = useAnimatedStyle(() => ({
+  const animatedCard = useAnimatedStyle(() => ({
     transform: [
       { translateX: offsetX.value },
       { translateY: offsetY.value },
@@ -184,7 +205,7 @@ function AnimatedCard(props: AnimatedCardProps) {
       ]}
     >
       <GestureDetector gesture={gesture}>
-        <Animated.View style={[animatedStyles]}>
+        <Animated.View style={[animatedCard]}>
           <ProfileCard profile={props.profile} />
         </Animated.View>
       </GestureDetector>
@@ -203,14 +224,20 @@ const styles = StyleSheet.create({
   },
 })
 
-const SWIPE_BOUNDARY = 250
+const SWIPE_DISTANCE = 250
 const EXIT_POSITION = Dimensions.get("window").width
 
 function isSwiped(direction: "left" | "right", position: number) {
-  if (direction === "left") return position < -SWIPE_BOUNDARY
-  if (direction === "right") return position > SWIPE_BOUNDARY
+  if (direction === "left") return position < -SWIPE_DISTANCE
+  if (direction === "right") return position > SWIPE_DISTANCE
 }
 
 function isNotSwiped(position: number) {
-  return Math.abs(position) < SWIPE_BOUNDARY
+  return Math.abs(position) < SWIPE_DISTANCE
+}
+
+const getSwipeDirection = (offsetX: number) => {
+  if (offsetX < 0) return "left"
+  if (offsetX > 0) return "right"
+  return ""
 }
