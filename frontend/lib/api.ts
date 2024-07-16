@@ -55,7 +55,7 @@ function handeError(err: any) {
   if (typeof err.response?.data === "string") throw new Error(err.response.data)
   if (!!err.response?.message) throw new Error(err.response.message)
   if (err.code === "ECONNABORTED")
-    throw new Error(`Timeout Error\n${process.env.EXPO_PUBLIC_API_URL}`)
+    throw new Error(`Timeout Error\n\n${process.env.EXPO_PUBLIC_API_URL}`)
   if (err.code === "ERR_NETWORK") throw new Error("Network Error")
   if (err.code === "ERR_BAD_REQUEST") throw new Error("Bad Request")
   if (err.code === "ERR_BAD_RESPONSE") throw new Error("Server Error")

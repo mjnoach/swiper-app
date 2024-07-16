@@ -4,6 +4,13 @@ import React from "react"
 import { TabBarIcon } from "@/components/navigation/TabBarIcon"
 import { useSession } from "@/providers/session"
 
+// TODO
+// – add match indication (confetti, thumbs up/down animation)
+// – add scrollable view on login, register, profile?
+// – display api url as link not text
+// – validate style and ui consistency across small screens and in native mode
+// – initialize the db with some fake data
+
 export default function TabLayout() {
   const { user, isClient } = useSession()
 
