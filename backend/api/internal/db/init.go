@@ -15,8 +15,6 @@ import (
 	pgx "github.com/jackc/pgx/v5"
 )
 
-// TODO
-// sql or pg
 var Client *sql.DB
 
 func init() {
@@ -25,7 +23,7 @@ func init() {
 	var DB_TYPE = os.Getenv("DB-TYPE")
 	if DB_TYPE == "pg" {
 		initPgConnection()
-		performPgSchemaMigration()
+		// performPgSchemaMigration()
 		return
 	}
 	initSqlConnection()
@@ -70,17 +68,13 @@ func performSqlSchemaMigration() {
 	}
 	var n int
 	var err error
-	switch os.Getenv("MIGRATE") {
-		case "down":
+	n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
+	if os.Getenv("MIGRATE") == "down" {
 			n, err = migrate.Exec(Client, "mysql", migrations, migrate.Down)
-		default:
-			n, err = migrate.Exec(Client, "mysql", migrations, migrate.Up)
 	}
 	utils.LogPanic(err, "")
 	utils.Log(fmt.Sprintf("Applied %d migrations!", n), "")
 }
 
-
-func performPgSchemaMigration() {
-	// TODO
-}
+// func performPgSchemaMigration() {
+// }
