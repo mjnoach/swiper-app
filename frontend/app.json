@@ -4,11 +4,11 @@
     "slug": "swiper-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./public/logo.png",
+    "icon": "./public/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./public/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,14 +17,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./public/icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./public/logo.png"
+      "favicon": "./public/icon.png"
     },
     "plugins": ["expo-router"],
     "experiments": {

@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native"
 export function Header() {
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: "/logo.png" }} />
+      <Image style={styles.image} source={{ uri: "/icon.png" }} />
       <Text style={styles.text}>Swiper App</Text>
     </View>
   )
