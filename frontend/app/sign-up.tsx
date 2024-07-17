@@ -64,7 +64,7 @@ export default function SignUpScreen() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} withScroll>
       <ThemedText type="title">Register</ThemedText>
       {errorMessage && (
         <Animated.View entering={FadeIn.duration(100)}>
@@ -147,9 +147,10 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 120,
     gap: 20,
+    paddingVertical: 350,
   },
   label: {
     color: "rgb(98,98,98)",

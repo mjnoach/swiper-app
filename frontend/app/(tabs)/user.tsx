@@ -8,7 +8,7 @@ export default function UserTab() {
   const { user, clearSession } = useSession()
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} withScroll>
       <ProfileCard profile={user!} />
       <Button title="Sign Out" onPress={() => clearSession()} />
     </ThemedView>
@@ -21,5 +21,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 40,
+    paddingVertical: 350,
   },
 })

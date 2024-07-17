@@ -8,7 +8,7 @@ export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{}} />
-      <ThemedView style={styles.container}>
+      <ThemedView style={styles.container} withScroll>
         <ThemedText type="title">This screen doesn't exist.</ThemedText>
         <Link href="/">
           <ThemedText style={styles.text} type="link">
@@ -23,10 +23,11 @@ export default function NotFoundScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    alignItems: "center",
     gap: 15,
+    padding: 20,
+    paddingVertical: 350,
   },
   text: {
     lineHeight: 55,
