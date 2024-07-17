@@ -12,7 +12,7 @@ import Animated, { FadeIn } from "react-native-reanimated"
 
 export default function SignInScreen() {
   const { setSession } = useSession()
-  const [email, setEmail] = useState("test@mail.com")
+  const [email, setEmail] = useState("test1@mail.com")
   const [password, setPassword] = useState("")
   const [passwordHidden, setPasswordHidden] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
