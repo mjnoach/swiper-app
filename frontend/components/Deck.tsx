@@ -23,6 +23,7 @@ type DeckProps = {
   profiles: User[]
   onDeckEnd: () => Promise<void>
   handleSwipeProgress({ swipeProgress, direction }: SwipeProgress): void
+  onMatch(): void
 }
 
 export function Deck(props: DeckProps) {
@@ -31,17 +32,6 @@ export function Deck(props: DeckProps) {
     props.profiles.length - 1,
   )
   const [revertSwipe, setRevertSwipe] = useState(false)
-  // const [isMatch, setMatch] = useState(false)
-
-  // const MATCH_ANIMATION_DURATION = 2200
-
-  // useEffect(() => {
-  //   console.log("🚀 ~ Deck ~ activeCardIndex:", activeCardIndex)
-  //   if (isMatch)
-  //     setTimeout(() => {
-  //       setMatch(false)
-  //     }, MATCH_ANIMATION_DURATION)
-  // }, [isMatch])
 
   useEffect(() => {
     if (revertSwipe) setRevertSwipe(false)
@@ -80,25 +70,28 @@ export function Deck(props: DeckProps) {
   }
 
   function handleMatch() {
-    alert("It's a match!")
+    console.log("It's a match!")
+    props.onMatch()
   }
 
   if (revertSwipe) return null
 
   return (
-    <GestureHandlerRootView style={styles.deck}>
-      {props.profiles.map((profile, i) => (
-        <AnimatedCard
-          key={i}
-          profile={profile}
-          isActive={i === activeCardIndex}
-          isSwipedOut={i > activeCardIndex}
-          swipeLeft={() => swipeLeft(profile)}
-          swipeRight={() => swipeRight(profile)}
-          handleSwipeProgress={props.handleSwipeProgress}
-        />
-      ))}
-    </GestureHandlerRootView>
+    <>
+      <GestureHandlerRootView style={styles.deck}>
+        {props.profiles.map((profile, i) => (
+          <AnimatedCard
+            key={i}
+            profile={profile}
+            isActive={i === activeCardIndex}
+            isSwipedOut={i > activeCardIndex}
+            swipeLeft={() => swipeLeft(profile)}
+            swipeRight={() => swipeRight(profile)}
+            handleSwipeProgress={props.handleSwipeProgress}
+          />
+        ))}
+      </GestureHandlerRootView>
+    </>
   )
 }
 
@@ -134,44 +127,44 @@ function AnimatedCard(props: AnimatedCardProps) {
     }
   })
 
-  const gesture = Gesture.Pan()
-    .enabled(false)
-    .onBegin(() => {
-      pressed.value = true
-    })
-    .onChange((event) => {
-      offsetX.value = event.translationX
-      offsetY.value = event.translationY
-    })
-    .onFinalize(() => {
-      pressed.value = false
-      offsetY.value = withSpring(0)
-      if (isNotSwiped(offsetX.value)) {
-        offsetX.value = withSpring(0)
-        return
-      }
-      if (isSwiped("left", offsetX.value)) {
-        offsetX.value = withSpring(
-          -EXIT_POSITION,
-          { overshootClamping: true },
-          props.swipeLeft,
-        )
-        return
-      }
-      if (isSwiped("right", offsetX.value)) {
-        offsetX.value = withSpring(
-          EXIT_POSITION,
-          { overshootClamping: true },
-          props.swipeRight,
-        )
-        return
-      }
-    })
-
-  useEffect(() => {
-    gesture.enabled(props.isActive)
+  const gesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .enabled(props.isActive)
+        .onBegin(() => {
+          pressed.value = true
+        })
+        .onChange((event) => {
+          offsetX.value = event.translationX
+          offsetY.value = event.translationY
+        })
+        .onFinalize(() => {
+          pressed.value = false
+          offsetY.value = withSpring(0)
+          if (isNotSwiped(offsetX.value)) {
+            offsetX.value = withSpring(0)
+            return
+          }
+          if (isSwiped("left", offsetX.value)) {
+            offsetX.value = withSpring(
+              -EXIT_POSITION,
+              { overshootClamping: true },
+              props.swipeLeft,
+            )
+            return
+          }
+          if (isSwiped("right", offsetX.value)) {
+            offsetX.value = withSpring(
+              EXIT_POSITION,
+              { overshootClamping: true },
+              props.swipeRight,
+            )
+            return
+          }
+        }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.isActive])
+    [props.isActive],
+  )
 
   const animatedCard = useAnimatedStyle(() => ({
     transform: [

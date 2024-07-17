@@ -5,6 +5,7 @@ import { api } from "@/lib/api"
 import { useSession } from "@/providers/session"
 import { SwipeProgress, User } from "@/types"
 import React, { useEffect, useState } from "react"
+import Confetti from "react-confetti-boom"
 import { StyleSheet } from "react-native"
 import Animated, {
   useAnimatedStyle,
@@ -19,11 +20,25 @@ export default function ExploreTab() {
   const [message, setMessage] = useState("")
   const bgOpacity = useSharedValue<number>(0.0)
   const swipeDirection = useSharedValue<SwipeProgress["direction"]>("")
+  const [confettiKey, setConfettiKey] = useState(0)
+
+  useEffect(() => {
+    if (confettiKey !== 0) {
+      const timer = setTimeout(() => {
+        setConfettiKey(0)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [confettiKey])
 
   useEffect(() => {
     fetchProfiles()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  function onMatch() {
+    setConfettiKey((prevKey) => prevKey + 1)
+  }
 
   async function fetchProfiles() {
     setProfiles([])
@@ -55,16 +70,28 @@ export default function ExploreTab() {
 
   return (
     <ThemedView style={styles.container}>
+      {!!message && <ThemedText type="subtitle">{message}</ThemedText>}
       {!!profiles.length && (
         <Animated.View style={[animatedBackground]}>
           <Deck
             profiles={profiles}
             onDeckEnd={fetchProfiles}
             handleSwipeProgress={handleSwipeProgress}
+            onMatch={onMatch}
           />
         </Animated.View>
       )}
-      {!!message && <ThemedText type="subtitle">{message}</ThemedText>}
+      {confettiKey !== 0 && (
+        <Confetti
+          key={confettiKey}
+          shapeSize={50}
+          spreadDeg={50}
+          y={0.8}
+          launchSpeed={2}
+          mode="boom"
+          particleCount={100}
+        />
+      )}
     </ThemedView>
   )
 }

@@ -5,7 +5,6 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon"
 import { useSession } from "@/providers/session"
 
 // TODO
-// – add match indication (confetti, thumbs up/down animation)
 // – add scrollable view on login, register, profile?
 // – validate style and ui consistency across small screens and in native mode
 
