@@ -7,7 +7,14 @@ import { Ionicons } from "@expo/vector-icons"
 import { LinearGradient } from "expo-linear-gradient"
 import { Link, router, usePathname } from "expo-router"
 import { useEffect, useState } from "react"
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native"
 import Animated, { FadeIn } from "react-native-reanimated"
 
 export default function SignUpScreen() {
@@ -70,6 +77,13 @@ export default function SignUpScreen() {
         <Animated.View entering={FadeIn.duration(100)}>
           <Text style={styles.errorText}>{errorMessage}</Text>
         </Animated.View>
+      )}
+      {isLoading && (
+        <ActivityIndicator
+          style={{ marginTop: 10 }}
+          size="large"
+          color="#00000050"
+        />
       )}
       <View>
         <ThemedText style={styles.label}>Email</ThemedText>
